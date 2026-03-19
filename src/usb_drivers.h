@@ -19,9 +19,5 @@ typedef enum {
     Default, Addressed, Configured, Suspended
 } USB_state;
 
-typedef struct {
-    uint8_t 
-}
-
 
 #endif
