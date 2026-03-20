@@ -66,7 +66,7 @@ void generate_configuration_descriptor(raspberryusb_configuration_descriptor* de
 }
 
 /**
- * @brief Initialises the USB configuration descriptor with some default values.
+ * @brief Initialises the USB interface descriptor with some default values.
  *
  * Params, notes, and warnings are identical to `generate_device_descriptor()`, reference
  * that function for further details.
@@ -85,19 +85,35 @@ void generate_interface_descriptor(raspberryusb_interface_descriptor* descriptor
 }
 
 /**
- * @brief Initialises the USB configuration descriptor with some default values.
+ * @brief Initialises the USB endpoint descriptor with some default values.
  *
  * Params, notes, and warnings are identical to `generate_device_descriptor()`, reference
  * that function for further details.
  */
-void generate_endpoint_descriptor(raspberryusb_endpoint_descriptor* descriptor);
+void generate_endpoint_descriptor(raspberryusb_endpoint_descriptor* descriptor)
+{
+    descriptor->bLength = 0x07;
+    descriptor->bDescriptorType = 0x05;
+    descriptor->bEndpointAddress = 0x00;
+    descriptor->bmAttributes = 0x00;
+    descriptor->wMaxPacketSize = 0x0000;
+    descriptor->bInterval = 0x00;
+}
 
 /**
- * @brief Initialises the USB configuration descriptor with some default values.
+ * @brief Initialises the USB HID descriptor with some default values.
  *
  * Params, notes, and warnings are identical to `generate_device_descriptor()`, reference
  * that function for further details.
  */
-void generate_hid_descriptor(raspberryusb_hid_descriptor* descriptor);
-
+void generate_hid_descriptor(raspberryusb_hid_descriptor* descriptor)
+{
+    descriptor-> = 0x09;
+    descriptor-> = 0x21;
+    descriptor-> = 0x1011;
+    descriptor-> = 0x00;
+    descriptor-> = 0x01;
+    descriptor-> = 0x22;
+    descriptor-> = 0x0000;
+}
 

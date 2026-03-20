@@ -143,7 +143,7 @@ No support for:
 - Non-HID devices
 - Devices with multiple configurations
 - Remote wakeup and suspend states
-- Physical descriptors (the ones used during enumeration)
+- Physical descriptor (though it can easily be added on your own)
 
 ## Constraints
 The RP2040's hardware USB controller poses several limitations for device-mode, the most notable being:
