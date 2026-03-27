@@ -2,7 +2,7 @@
 #include "usb_drivers.h"
 
 
-void isr_usb(void);
+void raspberryusb_reset(void)
 
 
 int main(void)

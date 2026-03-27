@@ -2,16 +2,6 @@
 #include "usb_descriptors.h"
 
 
-// descriptor-generation functions
-void generate_device_descriptor(raspberryusb_device_descriptor* descriptor);
-void generate_configuration_descriptor(raspberryusb_configuration_descriptor* descriptor);
-void generate_interface_descriptor(raspberryusb_interface_descriptor* descriptor);
-void generate_endpoint_descriptor(raspberryusb_endpoint_descriptor* descriptor);
-void generate_hid_descriptor(raspberryusb_hid_descriptor* descriptor);
-
-// descriptor setter functions
-
-
 /**
  * @brief Initialises the USB device descriptor with some default values.
  *
