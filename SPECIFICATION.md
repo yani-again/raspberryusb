@@ -116,18 +116,21 @@ In short, every main item in the report descriptor needs *at least* these:
 
 And since the report descriptor size will vary between devices (just like the string descriptor), there are functions to define **fields** within an array of values you should declare yourself. Below is a list of these functions.
 
-#### Report Descriptor Functions
-- `usage_page()`
-- `usage()`
-- `collection()`
-- `usage_minimum()` and `usage_maximum()`
-- `logical_minimum()` and `logical_maximum()`
-- `report_size()`
-- `report_count()`
-- `input()` 
-- `end_collection()`
-
-> [!WARNING]
-> TODO: fill in the parameters taken by the above functions once they're complete
+#### Report Descriptor Provided Values
+- 
 
 ### Descriptor Setter Functions
+
+## Miscellaneous
+
+### Global Variables
+These are necessary for RaspberryUSB to function as intended. Define them **at the global scope** of your program:
+```c
+USB_state global_USB_state = None;
+uint8_t device_addr = 0;
+```
+Or, if only a single file uses RaspberryUSB, you can additionally declare them as `static`:
+```c
+static USB_state global_USB_state = None;
+static uint8_t device_addr = 0;
+```

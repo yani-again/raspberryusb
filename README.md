@@ -143,7 +143,8 @@ No support for:
 - Non-HID devices
 - Devices with multiple configurations
 - Remote wakeup and suspend states
-- Physical descriptor (though it can easily be added on your own)
+- Physical descriptor (only used in super-niche HID devices, though it can easily be added on your own)
+- "Long" items within the report descriptor (largely unnecessary for HID devices, however as above, it can be easily added should it be needed)
 
 ## Constraints
 The RP2040's hardware USB controller poses several limitations for device-mode, the most notable being:
