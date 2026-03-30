@@ -1,5 +1,5 @@
-#ifndef USB_DESCRIPTORS_H
-#define USB_DESCRIPTORS_H
+#ifndef RASPBERRYUSB_DESCRIPTORS_H
+#define RASPBERRYUSB_DESCRIPTORS_H
 
 
 #include <stdint.h>
@@ -122,7 +122,7 @@ typedef struct {
     uint8_t  iProduct;
     uint8_t  iSerialNumber;
     uint8_t  bNumConfigurations;
-} raspberryusb_device_descriptor;
+} rusb_device_descriptor;
 
 typedef struct {
     uint8_t  bLength;
@@ -133,7 +133,7 @@ typedef struct {
     uint8_t  iConfiguration;
     uint8_t  bmAttributes;
     uint8_t  MaxPower;
-} raspberryusb_configuration_descriptor;
+} rusb_configuration_descriptor;
 
 typedef struct {
     uint8_t bLength;
@@ -145,7 +145,7 @@ typedef struct {
     uint8_t bInterfaceSubClass;
     uint8_t bInterfaceProtocol;
     uint8_t iInterface;
-} raspberryusb_interface_descriptor;
+} rusb_interface_descriptor;
 
 typedef struct {
     uint8_t  bLength;
@@ -154,7 +154,7 @@ typedef struct {
     uint8_t  bmAttributes;
     uint16_t wMaxPacketSize;
     uint8_t  bInterval;
-} raspberryusb_endpoint_descriptor;
+} rusb_endpoint_descriptor;
 
 typedef struct {
     uint8_t  bLength;
@@ -164,7 +164,7 @@ typedef struct {
     uint8_t  bNumDescriptors;
     uint8_t  bDescriptorType;
     uint16_t wDescriptorLength;
-} raspberryusb_hid_descriptor;
+} rusb_hid_descriptor;
 
 
 // descriptor-generation functions

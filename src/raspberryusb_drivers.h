@@ -1,5 +1,5 @@
-#ifndef USB_DRIVERS_H
-#define USB_DRIVERS_H
+#ifndef RASPBERRYUSB_DRIVERS_H
+#define RASPBERRYUSB_DRIVERS_H
 
 
 #include <stdint.h>
@@ -51,21 +51,52 @@
 #define RUSB_SIE_STATUS_LINE_STATE      (uint32_t) ((1 << 3) | (1 << 2))
 #define RUSB_SIE_STATUS_VBUS_DETECTED   (uint32_t) (1 << 0)
 
-// TODO: figure out the string concatenation stuff
-// #define RUSB_BUFF_STATUS_EP ## ep_num ## _IN    (uint32_t)
+#define RUSB_BUFF_STATUS_EP_IN(ep_num)  (uint32_t) (1 << (2 * ep_num))
+#define RUSB_BUFF_STATUS_EP_OUT(ep_num) (uint32_t) (1 << (2 * ep_num + 1))
 
+#define RUSB_INTE_EP_STALL_NAK          (uint32_t) (1 << 19)
+#define RUSB_INTE_ABORT_DONE            (uint32_t) (1 << 18)
+#define RUSB_INTE_DEV_SOF               (uint32_t) (1 << 17)
+#define RUSB_INTE_SETUP_REQ             (uint32_t) (1 << 16)
+#define RUSB_INTE_DEV_RESUME_FROM_HOST  (uint32_t) (1 << 15)
+#define RUSB_INTE_DEV_SUSPEND           (uint32_t) (1 << 14)
+#define RUSB_INTE_DEV_CONN_DIS          (uint32_t) (1 << 13)
+#define RUSB_INTE_BUS_RESET             (uint32_t) (1 << 12)
+#define RUSB_INTE_VBUS_DETECT           (uint32_t) (1 << 11)
+#define RUSB_INTE_STALL                 (uint32_t) (1 << 10)
+#define RUSB_INTE_ERROR_CRC             (uint32_t) (1 << 9)
+#define RUSB_INTE_ERROR_BIT_STUFF       (uint32_t) (1 << 8)
+#define RUSB_INTE_ERROR_RX_OVERFLOW     (uint32_t) (1 << 7)
+#define RUSB_INTE_ERROR_RX_TIMEOUT      (uint32_t) (1 << 6)
+#define RUSB_INTE_ERROR_DATA_SEQ        (uint32_t) (1 << 5)
+#define RUSB_INTE_BUFF_STATUS           (uint32_t) (1 << 4)
+#define RUSB_INTE_TRANS_COMPLETE        (uint32_t) (1 << 3)
 
-typedef enum {
-    None, Default, Addressed, Configured, Suspended
-} USB_state;
+#define RUSB_INTS_EP_STALL_NAK          (uint32_t) (1 << 19)
+#define RUSB_INTS_ABORT_DONE            (uint32_t) (1 << 18)
+#define RUSB_INTS_DEV_SOF               (uint32_t) (1 << 17)
+#define RUSB_INTS_SETUP_REQ             (uint32_t) (1 << 16)
+#define RUSB_INTS_DEV_RESUME_FROM_HOST  (uint32_t) (1 << 15)
+#define RUSB_INTS_DEV_SUSPEND           (uint32_t) (1 << 14)
+#define RUSB_INTS_DEV_CONN_DIS          (uint32_t) (1 << 13)
+#define RUSB_INTS_BUS_RESET             (uint32_t) (1 << 12)
+#define RUSB_INTS_VBUS_DETECT           (uint32_t) (1 << 11)
+#define RUSB_INTS_STALL                 (uint32_t) (1 << 10)
+#define RUSB_INTS_ERROR_CRC             (uint32_t) (1 << 9)
+#define RUSB_INTS_ERROR_BIT_STUFF       (uint32_t) (1 << 8)
+#define RUSB_INTS_ERROR_RX_OVERFLOW     (uint32_t) (1 << 7)
+#define RUSB_INTS_ERROR_RX_TIMEOUT      (uint32_t) (1 << 6)
+#define RUSB_INTS_ERROR_DATA_SEQ        (uint32_t) (1 << 5)
+#define RUSB_INTS_BUFF_STATUS           (uint32_t) (1 << 4)
+#define RUSB_INTS_TRANS_COMPLETE        (uint32_t) (1 << 3)
 
 
 // isr
-void raspberryusb_isr(void);
+void rusb_isr(void);
 
-// housekeeping functions
-void raspberryusb_reset(void);
-void raspberryusb_set_defaults(void);
+// housekeeping
+void rusb_bus_reset(void);
+void rusb_set_defaults(void);
 
 
 #endif

@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "usb_descriptors.h"
+#include "raspberryusb_descriptors.h"
 
 
 /**

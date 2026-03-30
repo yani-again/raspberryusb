@@ -121,16 +121,3 @@ And since the report descriptor size will vary between devices (just like the st
 
 ### Descriptor Setter Functions
 
-## Miscellaneous
-
-### Global Variables
-These are necessary for RaspberryUSB to function as intended. Define them **at the global scope** of your program:
-```c
-USB_state global_USB_state = None;
-uint8_t device_addr = 0;
-```
-Or, if only a single file uses RaspberryUSB, you can additionally declare them as `static`:
-```c
-static USB_state global_USB_state = None;
-static uint8_t device_addr = 0;
-```
