@@ -4,10 +4,15 @@
 
 typedef enum {
     None, Default, Addressed, Configured, Suspended
-} USB_state;
+} rusb_USB_state;
+
+typedef enum {
+    None, Trans_complete, Trans_done, Stall_sent, Data_seq_error, Error
+} rusb_packet_responses_out;
 
 
-extern USB_state global_USB_state;
+extern rusb_USB_state global_USB_state;
+extern rusb_packet_responses_out global_packet_response_out;
 
 
 #endif

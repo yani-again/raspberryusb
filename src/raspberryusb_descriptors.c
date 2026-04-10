@@ -11,7 +11,7 @@
  * not need to be changed.
  *
  * @param A pointer to `raspberryusb_device_descriptor` that will be initialised with
- *        default values
+ *        default values.
  *
  * @note All fields are modified. For a full list of their initial values, see
  *       the documentation.
@@ -19,7 +19,7 @@
  * @warning Ensure the pointer parameter is valid prior to the function call and is
  *          not NULL.
  */
-void generate_device_descriptor(raspberryusb_device_descriptor* descriptor)
+void rusb_generate_device_descriptor(rusb_device_descriptor* descriptor)
 {
     descriptor->bLength = 0x12;
     descriptor->bDescriptorType = 0x01;
@@ -43,7 +43,7 @@ void generate_device_descriptor(raspberryusb_device_descriptor* descriptor)
  * Params, notes, and warnings are identical to `generate_device_descriptor()`, reference
  * that function for further details.
  */
-void generate_configuration_descriptor(raspberryusb_configuration_descriptor* descriptor)
+void rusb_generate_configuration_descriptor(rusb_configuration_descriptor* descriptor)
 {
     descriptor->bLength = 0x09;
     descriptor->bDescriptorType = 0x02;
@@ -61,7 +61,7 @@ void generate_configuration_descriptor(raspberryusb_configuration_descriptor* de
  * Params, notes, and warnings are identical to `generate_device_descriptor()`, reference
  * that function for further details.
  */
-void generate_interface_descriptor(raspberryusb_interface_descriptor* descriptor)
+void rusb_generate_interface_descriptor(rusb_interface_descriptor* descriptor)
 {
     descriptor->bLength = 0x09;
     descriptor->bDescriptorType = 0x04;
@@ -80,7 +80,7 @@ void generate_interface_descriptor(raspberryusb_interface_descriptor* descriptor
  * Params, notes, and warnings are identical to `generate_device_descriptor()`, reference
  * that function for further details.
  */
-void generate_endpoint_descriptor(raspberryusb_endpoint_descriptor* descriptor)
+void rusb_generate_endpoint_descriptor(rusb_endpoint_descriptor* descriptor)
 {
     descriptor->bLength = 0x07;
     descriptor->bDescriptorType = 0x05;
@@ -96,14 +96,15 @@ void generate_endpoint_descriptor(raspberryusb_endpoint_descriptor* descriptor)
  * Params, notes, and warnings are identical to `generate_device_descriptor()`, reference
  * that function for further details.
  */
-void generate_hid_descriptor(raspberryusb_hid_descriptor* descriptor)
+void rusb_generate_hid_descriptor(rusb_hid_descriptor* descriptor)
 {
-    descriptor-> = 0x09;
-    descriptor-> = 0x21;
-    descriptor-> = 0x1011;
-    descriptor-> = 0x00;
-    descriptor-> = 0x01;
-    descriptor-> = 0x22;
-    descriptor-> = 0x0000;
+    descriptor->bLength = 0x09;
+    descriptor->bDescriptorType = 0x21;
+    descriptor->bcdHID = 0x1011;
+    descriptor->bCountryCode = 0x00;
+    descriptor->bNumDescriptors = 0x01;
+    descriptor->bDescriptorType = 0x22;
+    descriptor->wDescriptorLength = 0x0000;
 }
+
 

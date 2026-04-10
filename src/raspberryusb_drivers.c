@@ -18,8 +18,8 @@ void raspberryusb_isr(void)
 
 void raspberryusb_set_defaults(void)
 {
-    USB_MAIN_CTRL |= 1;
-    USB_SIE_CTRL |= (1 << 29) |
-                    (1 << 25);
+    RUSB_MAIN_CTRL |= 1;
+    RUSB_SIE_CTRL |= (1 << 29) |
+                     (1 << 25);
 }
 
