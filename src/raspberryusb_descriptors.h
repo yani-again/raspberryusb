@@ -106,6 +106,41 @@
 #define RUSB_L_DELIMITER         (uint8_t) ((1 << 7) | (1 << 5) | (1 << 3))
 
 
+// descriptor values
+#define RUSB_DEVICE_DESCRIPTOR_BDEVICECLASS         (uint8_t) 0
+#define RUSB_DEVICE_DESCRIPTOR_BDEVICESUBCLASS      (uint8_t) 1
+#define RUSB_DEVICE_DESCRIPTOR_BDEVICEPROTOCOL      (uint8_t) 2
+#define RUSB_DEVICE_DESCRIPTOR_IDVENDOR             (uint8_t) 3
+#define RUSB_DEVICE_DESCRIPTOR_IDPRODUCT            (uint8_t) 4
+#define RUSB_DEVICE_DESCRIPTOR_BCDDEVICE            (uint8_t) 5
+#define RUSB_DEVICE_DESCRIPTOR_IMANUFACTURER        (uint8_t) 6
+#define RUSB_DEVICE_DESCRIPTOR_IPRODUCT             (uint8_t) 7
+#define RUSB_DEVICE_DESCRIPTOR_ISERIALNUMBER        (uint8_t) 8
+
+#define RUSB_CONFIGURATION_DESCRIPTOR_WTOTALLENGTH      (uint8_t) 0
+#define RUSB_CONFIGURATION_DESCRIPTOR_BNUMINTERFACES    (uint8_t) 1
+#define RUSB_CONFIGURATION_DESCRIPTOR_BMATTRIBUTES      (uint8_t) 2
+#define RUSB_CONFIGURATION_DESCRIPTOR_MAXPOWER          (uint8_t) 3
+
+#define RUSB_INTERFACE_DESCRIPTOR_BINTERFACENUMBER      (uint8_t) 0
+#define RUSB_INTERFACE_DESCRIPTOR_BALTERNATESETTING     (uint8_t) 1
+#define RUSB_INTERFACE_DESCRIPTOR_BNUMENDPOINTS         (uint8_t) 2
+#define RUSB_INTERFACE_DESCRIPTOR_BINTERFACECLASS       (uint8_t) 3
+#define RUSB_INTERFACE_DESCRIPTOR_BINTERFACESUBCLASS    (uint8_t) 4
+#define RUSB_INTERFACE_DESCRIPTOR_BINTERFACEPROTOCOL    (uint8_t) 5
+#define RUSB_INTERFACE_DESCRIPTOR_IINTERFACE            (uint8_t) 6
+
+#define RUSB_ENDPOINT_DESCRIPTOR_BENDPOINTADDRESS   (uint8_t) 0
+#define RUSB_ENDPOINT_DESCRIPTOR_BMATTRIBUTES       (uint8_t) 1
+#define RUSB_ENDPOINT_DESCRIPTOR_WMAXPACKETSIZE     (uint8_t) 2
+#define RUSB_ENDPOINT_DESCRIPTOR_BINTERVAL          (uint8_t) 3
+
+#define RUSB_HID_DESCRIPTOR_BCOUNTRYCODE            (uint8_t) 0
+#define RUSB_HID_DESCRIPTOR_BNUMDESCRIPTORS         (uint8_t) 1
+#define RUSB_HID_DESCRIPTOR_BDESCRIPTORTYPE         (uint8_t) 2
+#define RUSB_HID_DESCRIPTOR_WDESCRIPTORLENGTH       (uint8_t) 3
+
+
 // descriptor structs
 typedef struct {
     uint8_t  bLength;
@@ -173,6 +208,13 @@ void rusb_generate_configuration_descriptor(rusb_configuration_descriptor* descr
 void rusb_generate_interface_descriptor(rusb_interface_descriptor* descriptor);
 void rusb_generate_endpoint_descriptor(rusb_endpoint_descriptor* descriptor);
 void rusb_generate_hid_descriptor(rusb_hid_descriptor* descriptor);
+
+// descriptor value setter functions
+void rusb_device_descriptor_set(uint8_t field, rusb_device_descriptor* descriptor, uint16_t value);
+void rusb_configuration_descriptor(uint8_t field, rusb_configuration_descriptor* descriptor, uint16_t value);
+void rusb_interface_descriptor(uint8_t field, rusb_interface_descriptor* descriptor, uint16_t value);
+void rusb_endpoint_descriptor(uint8_t field, rusb_endpoint_descriptor* descriptor, uint16_t value);
+void rusb_hid_descriptor(uint8_t field, rusb_hid_descriptor* descriptor, uint16_t value);
 
 
 #endif

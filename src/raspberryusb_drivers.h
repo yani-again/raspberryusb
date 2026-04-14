@@ -18,11 +18,12 @@
 // register values
 #define RUSB_MAIN_CTRL_SIM_TIMING       (uint32_t) (1 << 31)
 #define RUSB_MAIN_CTRL_CONTROLLER_EN    (uint32_t) (1 << 0)
+#define RUSB_MAIN_CTRL_HOST_NDEVICE     (uint32_t) (1 << 1)
 
 #define RUSB_SIE_CTRL_EP0_INT_STALL     (uint32_t) (1 << 31)
 #define RUSB_SIE_CTRL_EP0_DOUBLE_BUFF   (uint32_t) (1 << 30)
-#define RUSB_SIE_CTRL_EP0_INT1_BUFF     (uint32_t) (1 << 29)
-#define RUSB_SIE_CTRL_EP0_INT2_BUFF     (uint32_t) (1 << 28)
+#define RUSB_SIE_CTRL_EP0_INT_1BUFF     (uint32_t) (1 << 29)
+#define RUSB_SIE_CTRL_EP0_INT_2BUFF     (uint32_t) (1 << 28)
 #define RUSB_SIE_CTRL_EP0_INT_NAK       (uint32_t) (1 << 27)
 #define RUSB_SIE_CTRL_DIRECT_EN         (uint32_t) (1 << 26)
 #define RUSB_SIE_CTRL_DIRECT_DP         (uint32_t) (1 << 25)
@@ -95,8 +96,7 @@
 void rusb_isr(void);
 
 // housekeeping
-void rusb_bus_reset(void);
-void rusb_set_defaults(void);
+void rusb_reset(void);
 
 
 #endif

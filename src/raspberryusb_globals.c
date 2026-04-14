@@ -3,4 +3,5 @@
 
 rusb_USB_state global_USB_state = None;
 rusb_packet_responses_out global_packet_response_out = None;
+rusb_packet_responses_in global_packet_response_in = None;
 

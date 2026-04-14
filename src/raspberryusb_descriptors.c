@@ -2,6 +2,7 @@
 #include "raspberryusb_descriptors.h"
 
 
+// generation functions
 /**
  * @brief Initialises the USB device descriptor with some default values.
  *
@@ -107,4 +108,146 @@ void rusb_generate_hid_descriptor(rusb_hid_descriptor* descriptor)
     descriptor->wDescriptorLength = 0x0000;
 }
 
+
+// value setter functions
+/**
+ * @brief Modifies a specific field within a device descriptor using a provided value.
+ *
+ * @param `field` specifies which field to modify (see all available options in the
+ *        specification), `descriptor` is a pointer to a device descriptor struct, and
+ *        `value` is the value to set within the specified field.
+ *
+ * @note 16-bit fields must be provided little-endian (as per the USB specification), as
+ *       RaspberryUSB does not change the endianness automatically.
+ */
+void rusb_device_descriptor_set(uint8_t field, rusb_device_descriptor* descriptor, uint16_t value)
+{
+    switch (field)
+    {
+        case RUSB_DEVICE_DESCRIPTOR_BDEVICECLASS:
+            descriptor->bDeviceClass = value;
+            break;
+        case RUSB_DEVICE_DESCRIPTOR_BDEVICESUBCLASS:
+            descriptor->bDeviceSubClass = value;
+            break;
+        case RUSB_DEVICE_DESCRIPTOR_BDEVICEPROTOCOL:
+            descriptor->bDeviceProtocol = value;
+            break;
+        case RUSB_DEVICE_DESCRIPTOR_IDVENDOR:
+            descriptor->idVendor = (uint8_t) value;
+            break;
+        case RUSB_DEVICE_DESCRIPTOR_IDPRODUCT:
+            descriptor->idProduct = (uint8_t) value;
+            break;
+        case RUSB_DEVICE_DESCRIPTOR_BCDDEVICE:
+            descriptor->bcdDevice = (uint8_t) value;
+            break;
+        case RUSB_DEVICE_DESCRIPTOR_IMANUFACTURER:
+            descriptor->Imanufacturer = value;
+            break;
+        case RUSB_DEVICE_DESCRIPTOR_IPRODUCT:
+            descriptor->iProduct = value;
+            break;
+        case RUSB_DEVICE_DESCRIPTOR_ISERIALNUMBER:
+            descriptor->iSerialNumber = value;
+            break;
+    }
+}
+
+/**
+ * @brief Same functionality as `rusb_device_descriptor`, see the notes for that.
+ */
+void rusb_configuration_descriptor(uint8_t field, rusb_configuration_descriptor* descriptor, uint16_t value)
+{
+    switch (field)
+    {
+        case RUSB_CONFIGURATION_DESCRIPTOR_WTOTALLENGTH:
+            descriptor->wTotalLength = value;
+            break;
+        case RUSB_CONFIGURATION_DESCRIPTOR_BNUMINTERFACES:
+            descriptor->bNumInterfaces = (uint8_t) value;
+            break;
+        case RUSB_CONFIGURATION_DESCRIPTOR_BMATTRIBUTES:
+            descriptor->bmAttributes = (uint8_t) value;
+            break;
+        case RUSB_CONFIGURATION_DESCRIPTOR_MAXPOWER:
+            descriptor->MaxPower = (uint8_t) value;
+            break;
+    }
+}
+
+/**
+ * @brief Same functionality as `rusb_device_descriptor`, see the notes for that.
+ */
+void rusb_interface_descriptor(uint8_t field, rusb_interface_descriptor* descriptor, uint16_t value)
+{
+    switch (field)
+    {
+        case RUSB_INTERFACE_DESCRIPTOR_BINTERFACENUMBER:
+            descriptor->bInterfaceNumber = (uint8_t) value;
+            break;
+        case RUSB_INTERFACE_DESCRIPTOR_BALTERNATESETTING:
+            descriptor->bAlternateSetting = (uint8_t) value;
+            break;
+        case RUSB_INTERFACE_DESCRIPTOR_BNUMENDPOINTS:
+            descriptor->bNumEndpoints = (uint8_t) value;
+            break;
+        case RUSB_INTERFACE_DESCRIPTOR_BINTERFACECLASS:
+            descriptor->bInterfaceClass = (uint8_t) value;
+            break;
+        case RUSB_INTERFACE_DESCRIPTOR_BINTERFACESUBCLASS:
+            descriptor->bInterfaceSubClass = (uint8_t) value;
+            break;
+        case RUSB_INTERFACE_DESCRIPTOR_BINTERFACEPROTOCOL:
+            descriptor->bInterfaceProtocol = (uint8_t) value;
+            break;
+        case RUSB_INTERFACE_DESCRIPTOR_IINTERFACE:
+            descriptor->iInterface = (uint8_t) value;
+            break;
+    }
+}
+
+/**
+ * @brief Same functionality as `rusb_device_descriptor`, see the notes for that.
+ */
+void rusb_endpoint_descriptor(uint8_t field, rusb_endpoint_descriptor* descriptor, uint16_t value)
+{
+    switch (field)
+    {
+        case RUSB_ENDPOINT_DESCRIPTOR_BENDPOINTADDRESS:
+            descriptor->bEndpointAddress = (uint8_t) value;
+            break;
+        case RUSB_ENDPOINT_DESCRIPTOR_BMATTRIBUTES:
+            descriptor->bmAttributes = (uint8_t) value;
+            break;
+        case RUSB_ENDPOINT_DESCRIPTOR_WMAXPACKETSIZE:
+            descriptor->wMaxPacketSize = value;
+            break;
+        case RUSB_ENDPOINT_DESCRIPTOR_BINTERVAL:
+            descriptor->bInterval = (uint8_t) value;
+            break;
+    }
+}
+
+/**
+ * @brief Same functionality as `rusb_device_descriptor`, see the notes for that.
+ */
+void rusb_hid_descriptor(uint8_t field, rusb_hid_descriptor* descriptor, uint16_t value)
+{
+    switch (field)
+    {
+        case RUSB_HID_DESCRIPTOR_BCOUNTRYCODE:
+            descriptor->bCountryCode = (uint8_t) value;
+            break;
+        case RUSB_HID_DESCRIPTOR_BNUMDESCRIPTORS:
+            descriptor->bNumDescriptors = (uint8_t) value;
+            break;
+        case RUSB_HID_DESCRIPTOR_BDESCRIPTORTYPE:
+            descriptor->bDescriptorType = (uint8_t) value;
+            break;
+        case RUSB_HID_DESCRIPTOR_WDESCRIPTORLENGTH:
+            descriptor->wDescriptorLength = value;
+            break;
+    }
+}
 
