@@ -12,6 +12,7 @@
 #define RUSB_SIE_CTRL               ( *(volatile uint32_t *) (USB_BASE + 0x4C))
 #define RUSB_SIE_STATUS             ( *(volatile uint32_t *) (USB_BASE + 0x50))
 #define RUSB_BUFF_STATUS            ( *(volatile uint32_t *) (USB_BASE + 0x58))
+#define RUSB_EP_STALL_ARM           ( *(volatile uint32_t *) (USB_BASE + 0x68))
 #define RUSB_INTE                   ( *(volatile uint32_t *) (USB_BASE + 0x90))
 #define RUSB_INTS                   ( *(volatile uint32_t *) (USB_BASE + 0x98))
 
@@ -55,6 +56,9 @@
 #define RUSB_BUFF_STATUS_EP_IN(ep_num)  (uint32_t) (1 << (2 * ep_num))
 #define RUSB_BUFF_STATUS_EP_OUT(ep_num) (uint32_t) (1 << (2 * ep_num + 1))
 
+#define RUSB_EP_STALL_ARM_EP0_OUT       (uint32_t) (1 << 1)
+#define RUSB_EP_STALL_ARM_EP0_IN        (uint32_t) (1 << 0)
+
 #define RUSB_INTE_EP_STALL_NAK          (uint32_t) (1 << 19)
 #define RUSB_INTE_ABORT_DONE            (uint32_t) (1 << 18)
 #define RUSB_INTE_DEV_SOF               (uint32_t) (1 << 17)
@@ -97,6 +101,14 @@ void rusb_isr(void);
 
 // housekeeping
 void rusb_reset(void);
+
+// packet handling
+uint16_t rusb_handle_out_packet(void);
+void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_responses_in to_send);
+
+// endpoint functions
+void rusb_setup_out_endpoint(uint8_t ep_num);
+void rusb_setup_in_endpoint(uint8_t ep_num);
 
 
 #endif

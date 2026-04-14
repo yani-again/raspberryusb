@@ -27,8 +27,14 @@
 #define RUSB_DPSRAM_EP_OUT_BUFF_OFFSET(ep_num)   (uint32_t) (0x80 + ep_num * 8 + 4)
 
 // endpoint data buffers
-#define RUSB_EP_IN_DATA_BUFFER(ep_num)      (*(volatile uint32_t *) ())
-#define RUSB_EP_OUT_DATA_BUFFER(ep_num)     (*(volatile uint32_t *) ())
+#define RUSB_IN_EP0_BUFFER0
+            (*(volatile uint32_t *) (RUSB_USBCTRL_REGS_BASE + 0x100))
+// #define RUSB_IN_EP0_BUFFER1
+//             (*(volatile uint32_t *) (RUSB_USBCTRL_REGS_BASE + 0x140))
+#define RUSB_EP_IN_DATA_BUFFER(ep_num)
+            (*(volatile uint32_t *) (RUSB_USBCTRL_DATA_BUFFERS + ep_num * 0x40))
+#define RUSB_EP_OUT_DATA_BUFFER(ep_num)
+            (*(volatile uint32_t *) (RUSB_USBCTRL_DATA_BUFFERS + ep_num * 0x40 + 0x40))
 
 // endpoint control register
 #define RUSB_EP_CTRL_ENABLE          (uint32_t) (1 << 31)
