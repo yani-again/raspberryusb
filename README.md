@@ -145,6 +145,8 @@ No support for:
 - Remote wakeup and suspend states
 - Physical descriptor (only used in super-niche HID devices, though it can easily be added on your own)
 - "Long" items within the report descriptor (largely unnecessary for HID devices, however as above, it can be easily added should it be needed)
+- Double-buffered transfer modes
+- EP0 only uses 1 data buffer, the optional one at offset 0x140 is left unused
 
 ## Constraints
 The RP2040's hardware USB controller poses several limitations for device-mode, the most notable being:
