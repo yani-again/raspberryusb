@@ -143,10 +143,11 @@ No support for:
 - Non-HID devices
 - Devices with multiple configurations
 - Remote wakeup and suspend states
-- Physical descriptor (only used in super-niche HID devices, though it can easily be added on your own)
-- "Long" items within the report descriptor (largely unnecessary for HID devices, however as above, it can be easily added should it be needed)
+- Physical descriptor (only used in extremely-niche HID devices, though it can easily be added on your own by modifying RaspberryUSB's source code)
+- "Long" items within the report descriptor (largely unnecessary for HID devices, however as above, it can be added should it be needed)
 - Double-buffered transfer modes
 - EP0 only uses 1 data buffer, the optional one at offset 0x140 is left unused
+- Data transfers of over 64-bytes for descriptor transfers
 
 ## Constraints
 The RP2040's hardware USB controller poses several limitations for device-mode, the most notable being:

@@ -129,27 +129,27 @@ Ensure that ep\_num is **less than or equal to** 15.
 
 ### Declaring
 Descriptor structs available to use for descriptor declaration:
-- `raspberryusb_device_descriptor`
-- `raspberryusb_configuration_descriptor`
-- `raspberryusb_interface_descriptor`
-- `raspberryusb_endpoint_descriptor`
-- `raspberryusb_hid_descriptor`
+- `rusb_device_descriptor`
+- `rusb_configuration_descriptor`
+- `rusb_interface_descriptor`
+- `rusb_endpoint_descriptor`
+- `rusb_hid_descriptor`
 
 Example declarations:
 ```c
-raspberryusb_device_descriptor device_descriptor;
-raspberryusb_configuration_descriptor configuration_descriptor;
+rusb_device_descriptor device_descriptor;
+rusb_configuration_descriptor configuration_descriptor;
 ```
 
-Descriptor initialisation is **discouraged**, use the functions below instead.
+Descriptor initialisation is **discouraged**, use the functions below instead. The exception is the string descriptor as that would require `malloc` to reasonably implement.
 
 ### Descriptor Initialisation
 Declared descriptors can be initialised using initialisation functions, which simply set default values:
-- `void generate_device_descriptor(raspberryusb_device_descriptor* descriptor)`
-- `void generate_configuration_descriptor(raspberryusb_configuration_descriptor* descriptor)`
-- `void generate_interface_descriptor(raspberryusb_interface_descriptor* descriptor)`
-- `void generate_endpoint_descriptor(raspberryusb_endpoint_descriptor* descriptor)`
-- `void generate_hid_descriptor(raspberryusb_hid_descriptor* descriptor)`
+- `void generate_device_descriptor(rusb_device_descriptor* descriptor)`
+- `void generate_configuration_descriptor(rusb_configuration_descriptor* descriptor)`
+- `void generate_interface_descriptor(rusb_interface_descriptor* descriptor)`
+- `void generate_endpoint_descriptor(rusb_endpoint_descriptor* descriptor)`
+- `void generate_hid_descriptor(rusb_hid_descriptor* descriptor)`
 
 #### Default Values
 Complete list of what every descriptor type looks after default initialisation, **all are little-endian.**
