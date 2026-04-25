@@ -2,7 +2,7 @@
 #define RASPBERRYUSB_GLOBALS_H
 
 
-#include "raspberryusb_descriptors.h"
+#include "raspberryusb_descriptor_definitions.h"
 
 
 typedef enum {
