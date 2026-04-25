@@ -8,9 +8,9 @@ const uint8_t rusb_supported_descriptors[] = [0x01, 0x02, 0x03, 0x04, 0x05, 0x21
 const uint8_t rusb_supported_descriptors_count =
         sizeof(rusb_supported_descriptors) / sizeof(rusb_supported_descriptors[0]);
 
-volatile rusb_USB_state global_USB_state = None;
-volatile rusb_packet_response_out global_packet_response_out = None;
-volatile rusb_packet_response_in global_packet_response_in = None;
+volatile rusb_USB_state global_USB_state = State_None;
+volatile rusb_packet_response_out global_packet_response_out = Out_None;
+volatile rusb_packet_response_in global_packet_response_in = In_None;
 volatile uint8_t global_buffer_status[2][16] = {0};
 
 rusb_device_descriptor device_descriptor;

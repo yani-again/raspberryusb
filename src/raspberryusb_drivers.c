@@ -19,7 +19,7 @@ void rusb_isr(void)
                     if ((i != 0) ||
                             (i == 0 && (RUSB_EP_STALL_ARM & RUSB_EP_STALL_ARM_EP0_OUT)))
                     {
-                        global_packet_response_out = Stall;
+                        global_packet_response_out = Out_Stall;
                         global_buffer_status[0][i] = 1;
                         RUSB_BUFF_STATUS = 0;
 
@@ -29,11 +29,11 @@ void rusb_isr(void)
 
                 if (RUSB_INTS & RUSB_INTS_BUFF_STATUS)
                 {
-                    global_packet_response_out = Trans_done;
+                    global_packet_response_out = Out_Trans_done;
                 }
                 else
                 {
-                    global_packet_response_out = Trans_complete;
+                    global_packet_response_out = Out_Trans_complete;
                     /* TODO: datasheet says this bit is RO but it also says "clear by
                      * writing to this bit" - figure out which it is */
                     RUSB_INTS &= ~RUSB_INTS_TRANS_COMPLETE;
@@ -59,7 +59,7 @@ void rusb_isr(void)
                     if ((i != 0) ||
                             (i == 0 && (RUSB_EP_STALL_ARM & RUSB_EP_STALL_ARM_EP0_IN)))
                     {
-                        global_packet_response_in = Stall;
+                        global_packet_response_in = In_Stall;
                         global_buffer_status[1][i] = 1;
                         RUSB_BUFF_STATUS = 0;
 
@@ -69,11 +69,11 @@ void rusb_isr(void)
 
                 if (RUSB_INTS & RUSB_INTS_BUFF_STATUS)
                 {
-                    global_packet_response_in = Trans_done;
+                    global_packet_response_in = In_Trans_done;
                 }
                 else
                 {
-                    global_packet_response_in = Trans_complete;
+                    global_packet_response_in = In_Trans_complete;
                     /* TODO: datasheet says this bit is RO but it also says "clear by
                      * writing to this bit" - figure out which it is */
                     RUSB_INTS &= ~RUSB_INTS_TRANS_COMPLETE;
@@ -97,7 +97,7 @@ void rusb_isr(void)
         {
             if (RUSB_BUFF_STATUS & RUSB_BUFF_STATUS_EP_OUT(i))
             {
-                global_packet_response_out = Trans_done;
+                global_packet_response_out = Out_Trans_done;
 
                 // NOTE! ensure this line is last
                 RUSB_BUFF_STATUS = 0;
@@ -122,8 +122,8 @@ void rusb_isr(void)
                    | RUSB_INTE_DEV_RESUME_FROM_HOST
                    | RUSB_INTE_DEV_SUSPEND
                    | RUSB_INTE_TRANS_COMPLETE;
-        global_USB_state = Default;
-        global_packet_response_out = None;
+        global_USB_state = State_Default;
+        global_packet_response_out = Out_None;
 
         return;
     }
@@ -131,21 +131,21 @@ void rusb_isr(void)
     if (RUSB_INTS & RUSB_INTS_DEV_RESUME_FROM_HOST)
     {
         RUSB_SIE_STATUS &= ~RUSB_SIE_STATUS_SUSPENDED;
-        global_USB_state = Configured;
+        global_USB_state = State_Configured;
 
         return;
     }
 
     if (RUSB_INTS & RUSB_INTS_DEV_SUSPEND)
     {
-        global_USB_state = Suspended;
+        global_USB_state = State_Suspended;
 
         return;
     }
 
     if (RUSB_INTS & RUSB_INTS_DEV_CONN_DIS)
     {
-        global_USB_state = None;
+        global_USB_state = State_None;
 
         return;
     }
@@ -168,9 +168,9 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_SETUP_REQ)
     {
-        // global_USB_state = Default;
+        // global_USB_state = State_Default;
         // send device descriptor through
-        // rusb_packet_response_in setup_response = Trans;
+        // rusb_packet_response_in setup_response = In_Trans;
         // rusb_handle_in_packet(0, setup_response);
 
         uint8_t bRequest = RUSB_DPSRAM_SETUP_PACKET[1];
@@ -200,7 +200,7 @@ void rusb_isr(void)
             rusb_load_descriptor(wDescriptorType, wDescriptorIndex);
 
             // send descriptor to host
-            rusb_packet_response_in setup_response = Trans;
+            rusb_packet_response_in setup_response = In_Trans;
             rusb_handle_in_packet(0, setup_response);
         }
     }
@@ -342,9 +342,9 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex)
 
 uint16_t rusb_handle_out_packet(void)
 {
-    if (global_packet_response_out != None)
+    if (global_packet_response_out != Out_None)
     {
-        global_packet_response_out = None;
+        global_packet_response_out = Out_None;
 
         // TODO: return buffer offset
         for (uint8_t i = 0; i < 16; ++i)
@@ -372,7 +372,7 @@ void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send)
 {
     switch (to_send)
     {
-        case Trans:
+        case In_Trans:
             RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) |= RUSB_EP_BUFF_CTRL_BUFF0_FULL;
 
             // wait some clock cycles - mentioned in RP2040 datasheet
@@ -383,8 +383,8 @@ void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send)
             RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
 
             break;
-        case Stall:
-            global_packet_response_in = Stall;
+        case In_Stall:
+            global_packet_response_in = In_Stall;
             RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) |= RUSB_EP_BUFF_CTRL_BUFF0_SEND_STALL;
 
             break;

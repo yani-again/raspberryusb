@@ -6,15 +6,16 @@
 
 
 typedef enum {
-    None, Default, Addressed, Configured, Suspended
+    State_None, State_Default, State_Addressed, State_Configured, State_Suspended
 } rusb_USB_state;
 
 typedef enum {
-    None, Trans_complete, Trans_done, Stall, Nak, Data_seq_error, Error
+    Out_None, Out_Trans_complete, Out_Trans_done, Out_Stall,
+	Out_Nak, Out_Data_seq_error, Out_Error
 } rusb_packet_response_out;
 
 typedef enum {
-    None, Trans, Stall, Nak
+    In_None, In_Trans, In_Stall, In_Nak
 } rusb_packet_response_in;
 
 

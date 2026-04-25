@@ -114,7 +114,7 @@ void rusb_generate_hid_descriptor(rusb_hid_descriptor* descriptor)
     descriptor->bcdHID = 0x1101;
     descriptor->bCountryCode = 0x00;
     descriptor->bNumDescriptors = 0x01;
-    descriptor->bDescriptorType = 0x22;
+    descriptor->bDescriptorType2 = 0x22;
     descriptor->wDescriptorLength = 0x0000;
 }
 

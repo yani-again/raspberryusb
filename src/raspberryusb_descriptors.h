@@ -198,7 +198,7 @@ typedef struct {
     uint16_t bcdHID;
     uint8_t  bCountryCode;
     uint8_t  bNumDescriptors;
-    uint8_t  bDescriptorType;
+    uint8_t  bDescriptorType2;
     uint16_t wDescriptorLength;
 } rusb_hid_descriptor;
 
@@ -213,10 +213,10 @@ void rusb_generate_hid_descriptor(rusb_hid_descriptor* descriptor);
 
 // descriptor value setter functions
 void rusb_device_descriptor_set(uint8_t field, rusb_device_descriptor* descriptor, uint16_t value);
-void rusb_configuration_descriptor(uint8_t field, rusb_configuration_descriptor* descriptor, uint16_t value);
-void rusb_interface_descriptor(uint8_t field, rusb_interface_descriptor* descriptor, uint16_t value);
-void rusb_endpoint_descriptor(uint8_t field, rusb_endpoint_descriptor* descriptor, uint16_t value);
-void rusb_hid_descriptor(uint8_t field, rusb_hid_descriptor* descriptor, uint16_t value);
+void rusb_configuration_descriptor_set(uint8_t field, rusb_configuration_descriptor* descriptor, uint16_t value);
+void rusb_interface_descriptor_set(uint8_t field, rusb_interface_descriptor* descriptor, uint16_t value);
+void rusb_endpoint_descriptor_set(uint8_t field, rusb_endpoint_descriptor* descriptor, uint16_t value);
+void rusb_hid_descriptor_set(uint8_t field, rusb_hid_descriptor* descriptor, uint16_t value);
 
 // report & string descriptor functions
 void rusb_set_report_descriptor(const uint8_t *extern_descriptor);
