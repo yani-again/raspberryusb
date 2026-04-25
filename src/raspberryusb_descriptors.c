@@ -2,6 +2,16 @@
 #include "raspberryusb_descriptors.h"
 
 
+void rusb_generate_all_descriptors()
+{
+    rusb_generate_device_descriptor(&device_descriptor);
+    rusb_generate_configuration_descriptor(&configuration_descriptor);
+    rusb_generate_interface_descriptor(&interface_descriptor);
+    rusb_generate_endpoint_descriptor(&endpoint_descriptor_1_in);
+    rusb_generate_endpoint_descriptor(&endpoint_descriptor_1_out);
+    rusb_generate_hid_descriptor(&hid_descriptor);
+}
+
 // generation functions
 /**
  * @brief Initialises the USB device descriptor with some default values.
@@ -32,9 +42,9 @@ void rusb_generate_device_descriptor(rusb_device_descriptor* descriptor)
     descriptor->idVendor = 0x0000;
     descriptor->idProduct = 0x0000;
     descriptor->bcdDevice = 0x0100;
-    descriptor->iManufacturer = 0x00;
-    descriptor->iProduct = 0x01;
-    descriptor->iSerialNumber = 0x02;
+    descriptor->iManufacturer = 0x01;
+    descriptor->iProduct = 0x02;
+    descriptor->iSerialNumber = 0x03;
     descriptor->bNumConfigurations = 0x01;
 }
 
@@ -51,7 +61,7 @@ void rusb_generate_configuration_descriptor(rusb_configuration_descriptor* descr
     descriptor->wTotalLength = 0x0000;
     descriptor->bNumInterfaces = 0x01;
     descriptor->bConfigurationValue = 0x01;
-    descriptor->iConfiguration = 0x03;
+    descriptor->iConfiguration = 0x00;
     descriptor->bmAttributes = 0x00;
     descriptor->MaxPower = 0x00;
 }
@@ -72,7 +82,7 @@ void rusb_generate_interface_descriptor(rusb_interface_descriptor* descriptor)
     descriptor->bInterfaceClass = 0x03;
     descriptor->bInterfaceSubClass = 0x00;
     descriptor->bInterfaceProtocol = 0x00;
-    descriptor->iInterface = 0x04;
+    descriptor->iInterface = 0x00;
 }
 
 /**
@@ -101,7 +111,7 @@ void rusb_generate_hid_descriptor(rusb_hid_descriptor* descriptor)
 {
     descriptor->bLength = 0x09;
     descriptor->bDescriptorType = 0x21;
-    descriptor->bcdHID = 0x1011;
+    descriptor->bcdHID = 0x1101;
     descriptor->bCountryCode = 0x00;
     descriptor->bNumDescriptors = 0x01;
     descriptor->bDescriptorType = 0x22;
@@ -249,5 +259,26 @@ void rusb_hid_descriptor(uint8_t field, rusb_hid_descriptor* descriptor, uint16_
             descriptor->wDescriptorLength = value;
             break;
     }
+}
+
+
+void rusb_set_report_descriptor(const uint8_t *extern_descriptor)
+{
+    rusb_report_descriptor = extern_descriptor;
+}
+
+void rusb_set_string_descriptor_manufacturer(const uint8_t *extern_descriptor)
+{
+    rusb_string_descriptor_manufacturer = extern_descriptor;
+}
+
+void rusb_set_string_descriptor_product(const uint8_t *extern_descriptor)
+{
+    rusb_string_descriptor_product = extern_descriptor;
+}
+
+void rusb_set_string_descriptor_serial_number(const uint8_t *extern_descriptor)
+{
+    rusb_string_descriptor_serial_number = extern_descriptor;
 }
 

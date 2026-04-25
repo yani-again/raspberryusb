@@ -101,8 +101,10 @@ void rusb_isr(void);
 
 // housekeeping
 void rusb_reset(void);
+void rusb_enable_usb(void);
 
 // packet handling
+void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex);
 uint16_t rusb_handle_out_packet(void);
 void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_responses_in to_send);
 

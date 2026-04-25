@@ -3,6 +3,7 @@
 #include "raspberryusb_drivers.h"
 #include "raspberryusb_globals.h"
 
+// TODO: delete this file, it's no longer needed
 
 /**
  * @brief Handles IN packets for a specific endpoint, setting global_packet_response_in

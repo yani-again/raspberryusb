@@ -3,6 +3,7 @@
 
 
 #include <stdint.h>
+#include "raspberryusb_globals.h"
 
 
 // report descriptor values
@@ -203,6 +204,7 @@ typedef struct {
 
 
 // descriptor-generation functions
+void rusb_generate_all_descriptors();
 void rusb_generate_device_descriptor(rusb_device_descriptor* descriptor);
 void rusb_generate_configuration_descriptor(rusb_configuration_descriptor* descriptor);
 void rusb_generate_interface_descriptor(rusb_interface_descriptor* descriptor);
@@ -215,6 +217,12 @@ void rusb_configuration_descriptor(uint8_t field, rusb_configuration_descriptor*
 void rusb_interface_descriptor(uint8_t field, rusb_interface_descriptor* descriptor, uint16_t value);
 void rusb_endpoint_descriptor(uint8_t field, rusb_endpoint_descriptor* descriptor, uint16_t value);
 void rusb_hid_descriptor(uint8_t field, rusb_hid_descriptor* descriptor, uint16_t value);
+
+// report & string descriptor functions
+void rusb_set_report_descriptor(const uint8_t *extern_descriptor);
+void rusb_set_string_descriptor_manufacturer(const uint8_t *extern_descriptor);
+void rusb_set_string_descriptor_product(const uint8_t *extern_descriptor);
+void rusb_set_string_descriptor_serial_number(const uint8_t *extern_descriptor);
 
 
 #endif

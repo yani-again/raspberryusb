@@ -166,19 +166,101 @@ void rusb_isr(void)
         return;
     }
 
-    // TODO: finish when able to send/receive data
     if (RUSB_INTS & RUSB_INTS_SETUP_REQ)
     {
         global_USB_state = Default;
+
+        // repare buffer
+        RUSB_IN_EP0_BUFFER0[0] = device_descriptor->bLength;
+        RUSB_IN_EP0_BUFFER0[1] = device_descriptor->bDescriptorType;
+        RUSB_IN_EP0_BUFFER0[2] =
+            (uint8_t) (device_descriptor->bcdUSB & 0xFF);
+        RUSB_IN_EP0_BUFFER0[3] = 
+            (uint8_t) ((device_descriptor->bcdUSB >> 8) & 0xFF);
+        RUSB_IN_EP0_BUFFER0[4] = device_descriptor->bDeviceClass;
+        RUSB_IN_EP0_BUFFER0[5] = device_descriptor->bDeviceSubClass;
+        RUSB_IN_EP0_BUFFER0[6] = device_descriptor->bDeviceProtocol;
+        RUSB_IN_EP0_BUFFER0[7] = device_descriptor->bMaxPacketSize0;
+        RUSB_IN_EP0_BUFFER0[8] =
+            (uint8_t) (device_descriptor->idVendor & 0xFF);
+        RUSB_IN_EP0_BUFFER0[9] =
+            (uint8_t) ((device_descriptor->idVendor >> 8) & 0xFF);
+        RUSB_IN_EP0_BUFFER0[10] =
+            (uint8_t) (device_descriptor->idProduct & 0xFF);
+        RUSB_IN_EP0_BUFFER0[11] =
+            (uint8_t) ((device_descriptor->idProduct >> 8) & 0xFF);
+        RUSB_IN_EP0_BUFFER0[12] =
+            (uint8_t) (device_descriptor->bcdDevice & 0xFF);
+        RUSB_IN_EP0_BUFFER0[13] =
+            (uint8_t) ((device_descriptor->bcdDevice >> 8) & 0xFF);
+        RUSB_IN_EP0_BUFFER0[14] = device_descriptor->iManufacturer;
+        RUSB_IN_EP0_BUFFER0[15] = device_descriptor->iProduct;
+        RUSB_IN_EP0_BUFFER0[16] = device_descriptor->iSerialNumber;
+        RUSB_IN_EP0_BUFFER0[17] = device_descriptor->bNumConfigurations;
+
+        // send device descriptor through
+        rusb_packet_response_in setup_response = Trans;
+        rusb_handle_in_packet(0, setup_response);
+
         return;
+    }
+
+    if (RUSB_INTS & RUSB_INTS_SETUP_REQ)
+    {
+        // global_USB_state = Default;
+        // send device descriptor through
+        // rusb_packet_response_in setup_response = Trans;
+        // rusb_handle_in_packet(0, setup_response);
+
+        uint8_t bRequest = RUSB_DPSRAM_SETUP_PACKET[1];
+
+        if (bRequest == GET_DESCRIPTOR)
+        {
+            uint8_t wDescriptorType = RUSB_DPSRAM_SETUP_PACKET[3];
+            uint8_t wDescriptorIndex = RUSB_DPSRAM_SETUP_PACKET[2];
+
+            /* ensure descriptor is supported by RaspberryUSB.
+             * For full list of supported descriptors, see specification.
+             */
+            uint8_t supported_descriptor = 0;
+            for (uint8_t i = 0; rusb_supported_descriptors_count; ++i)
+            {
+                if (wDescriptorType == rusb_supported_descriptors[i])
+                {
+                    supported_descriptor = 1;
+                    break;
+                }
+            }
+
+            if (!supported_descriptor)
+                return;
+
+            // load the right descriptor in
+            rusb_load_descriptor(wDescriptorType, wDescriptorIndex);
+
+            // send descriptor to host
+            rusb_packet_response_in setup_response = Trans;
+            rusb_handle_in_packet(0, setup_response);
+        }
     }
 }
 
 void rusb_reset(void)
 {
-    RUSB_MAIN_CTRL |= RUSB_MAIN_CTRL_CONTROLLER_EN;
     RUSB_INTE |= RUSB_INTE_BUS_RESET;
     RUSB_SIE_CTRL |= RUSB_SIE_CTRL_DIRECT_DP;   // signal full-speed
+}
+
+void rusb_enable_usb(void)
+{
+    RUSB_MAIN_CTRL |= RUSB_MAIN_CTRL_CONTROLLER_EN;
+}
+
+void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex)
+{
+    // zero-out data buffer first to remove previous data
+    // RUSB_
+    // RUSB_IN_EP0_BUFFER0
 }
 
 uint16_t rusb_handle_out_packet(void)
@@ -215,10 +297,13 @@ void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send)
     {
         case Trans:
             RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) |= RUSB_EP_BUFF_CTRL_BUFF0_FULL;
+
+            // wait some clock cycles - mentioned in RP2040 datasheet
+            for (uint8_t i = 0; i < 20; ++i)
+                ;
+
             // make buffer unavailable
             RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
-
-            RUSB_DPSRAM_EP_IN_CTRL(ep_num);
 
             break;
         case Stall:

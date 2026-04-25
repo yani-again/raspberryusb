@@ -5,6 +5,26 @@
 #include <stdint.h>
 
 
+// USB-specification-specific
+#define GET_STATUS                   0
+#define CLEAR_FEATURE                1
+#define SET_FEATURE                  3
+#define SET_ADDRESS                  5
+#define GET_DESCRIPTOR               6
+#define SET_DESCRIPTOR               7
+#define GET_CONFIGURATION            8
+#define SET_CONFIGURATION            9
+#define GET_INTERFACE                10
+#define SET_INTERFACE                11
+#define SYNCH_FRAME                  12
+#define TYPE_DEVICE_DESCRIPTOR              1
+#define TYPE_CONFIGURATION_DESCRIPTOR       2
+#define TYPE_STRING_DESCRIPTOR              3
+#define TYPE_INTERFACE_DESCRIPTOR           4
+#define TYPE_ENDPOINT_DESCRIPTOR            5
+#define TYPE_DEVICE_QUALIFIER_DESCRIPTOR    6
+#define TYPE_OTHER_SPEED_CONFIGURATION      7
+
 // USB ctrl
 #define RUSB_USBCTRL_BASE            0x50100000
 #define RUSB_USBCTRL_DPSRAM_BASE     0x50100000
@@ -28,13 +48,13 @@
 
 // endpoint data buffers
 #define RUSB_IN_EP0_BUFFER0
-            (*(volatile uint32_t *) (RUSB_USBCTRL_REGS_BASE + 0x100))
+            ((volatile uint8_t *) (RUSB_USBCTRL_REGS_BASE + 0x100))
 // #define RUSB_IN_EP0_BUFFER1
-//             (*(volatile uint32_t *) (RUSB_USBCTRL_REGS_BASE + 0x140))
+//             ((volatile uint8_t *) (RUSB_USBCTRL_REGS_BASE + 0x140))
 #define RUSB_EP_IN_DATA_BUFFER(ep_num)
-            (*(volatile uint32_t *) (RUSB_USBCTRL_DATA_BUFFERS + ep_num * 0x40))
+            ((volatile uint8_t *) (RUSB_USBCTRL_DATA_BUFFERS + ep_num * 0x40))
 #define RUSB_EP_OUT_DATA_BUFFER(ep_num)
-            (*(volatile uint32_t *) (RUSB_USBCTRL_DATA_BUFFERS + ep_num * 0x40 + 0x40))
+            ((volatile uint8_t *) (RUSB_USBCTRL_DATA_BUFFERS + ep_num * 0x40 + 0x40))
 
 // endpoint control register
 #define RUSB_EP_CTRL_ENABLE          (uint32_t) (1 << 31)
