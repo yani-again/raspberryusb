@@ -69,11 +69,11 @@ void rusb_isr(void)
 
                 if (RUSB_INTS & RUSB_INTS_BUFF_STATUS)
                 {
-                    global_packet_response_in = In_Trans_done;
+                    global_packet_response_in = In_Trans;
                 }
                 else
                 {
-                    global_packet_response_in = In_Trans_complete;
+                    global_packet_response_in = In_Trans_done;
                     /* TODO: datasheet says this bit is RO but it also says "clear by
                      * writing to this bit" - figure out which it is */
                     RUSB_INTS &= ~RUSB_INTS_TRANS_COMPLETE;
@@ -268,7 +268,7 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex)
         case 0x03:
             if (wDescriptorIndex == 1)
             {
-                for (uint8 i = 0;
+                for (uint8_t i = 0;
                      i < sizeof(rusb_string_descriptor_manufacturer);
                      ++i)
                 {
@@ -277,7 +277,7 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex)
             }
             else if (wDescriptorIndex == 2)
             {
-                for (uint8 i = 0;
+                for (uint8_t i = 0;
                      i < sizeof(rusb_string_descriptor_product);
                      ++i)
                 {
@@ -286,7 +286,7 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex)
             }
             else
             {
-                for (uint8 i = 0;
+                for (uint8_t i = 0;
                      i < sizeof(rusb_string_descriptor_serial_number);
                      ++i)
                 {
@@ -333,7 +333,7 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex)
             break;
         case 0x22:
             for (uint8_t i = 0; i < hid_descriptor.wDescriptorLength; ++i)
-                RUSB_IN_EP0_BUFFER0[i] = report_descriptor[i];
+                RUSB_IN_EP0_BUFFER0[i] = rusb_report_descriptor[i];
             break;
     }
 
@@ -400,7 +400,7 @@ void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send)
  *        default values.
  *
  * @param `ep_num` is the endpoint number, `ep_type` is the endpoint type - this uses the
- *        macros RUSB_EP_TYPE_<type> where <type> is one of:
+ *        macros RUSB_EP_CTRL_TYPE_<type> where <type> is one of:
  *          - CONTROL
  *          - ISOCHRONOUS
  *          - INTERRUPT
@@ -413,16 +413,16 @@ void rusb_setup_out_endpoint(uint8_t ep_num, uint8_t ep_type)
 
     switch (ep_type)
     {
-        case RUSB_EP_TYPE_CONTROL:
+        case RUSB_EP_CTRL_TYPE_CONTROL:
             RUSB_DPSRAM_EP_OUT_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_CONTROL;
             break;
-        case RUSB_EP_TYPE_ISOCHRONOUS:
+        case RUSB_EP_CTRL_TYPE_ISOCHRONOUS:
             RUSB_DPSRAM_EP_OUT_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_ISO;
             break;
-        case RUSB_EP_TYPE_INTERRUPT:
+        case RUSB_EP_CTRL_TYPE_INTERRUPT:
             RUSB_DPSRAM_EP_OUT_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_INTERRUPT;
             break;
-        case RUSB_EP_TYPE_BULK:
+        case RUSB_EP_CTRL_TYPE_BULK:
             RUSB_DPSRAM_EP_OUT_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_BULK;
             break;
     }
@@ -442,7 +442,7 @@ void rusb_setup_out_endpoint(uint8_t ep_num, uint8_t ep_type)
  *        default values.
  *
  * @param `ep_num` is the endpoint number, `ep_type` is the endpoint type - this uses the
- *        macros RUSB_EP_TYPE_<type> where <type> is one of:
+ *        macros RUSB_EP_CTRL_TYPE_<type> where <type> is one of:
  *          - CONTROL
  *          - ISOCHRONOUS
  *          - INTERRUPT
@@ -455,16 +455,16 @@ void rusb_setup_in_endpoint(uint8_t ep_num, uint8_t ep_type)
 
     switch (ep_type)
     {
-        case RUSB_EP_TYPE_CONTROL:
+        case RUSB_EP_CTRL_TYPE_CONTROL:
             RUSB_DPSRAM_EP_IN_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_CONTROL;
             break;
-        case RUSB_EP_TYPE_ISOCHRONOUS:
+        case RUSB_EP_CTRL_TYPE_ISOCHRONOUS:
             RUSB_DPSRAM_EP_IN_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_ISO;
             break;
-        case RUSB_EP_TYPE_INTERRUPT:
+        case RUSB_EP_CTRL_TYPE_INTERRUPT:
             RUSB_DPSRAM_EP_IN_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_INTERRUPT;
             break;
-        case RUSB_EP_TYPE_BULK:
+        case RUSB_EP_CTRL_TYPE_BULK:
             RUSB_DPSRAM_EP_IN_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_BULK;
             break;
     }

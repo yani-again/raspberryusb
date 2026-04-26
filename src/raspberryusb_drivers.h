@@ -3,18 +3,19 @@
 
 
 #include <stdint.h>
+#include "raspberryusb_globals.h"
 
 
 // USB registers
 #define RUSB_BASE                   0x50110000
-#define RUSB_ADDR_ENDP              ( *(volatile uint32_t *) (USB_BASE + 0x00))
-#define RUSB_MAIN_CTRL              ( *(volatile uint32_t *) (USB_BASE + 0x40))
-#define RUSB_SIE_CTRL               ( *(volatile uint32_t *) (USB_BASE + 0x4C))
-#define RUSB_SIE_STATUS             ( *(volatile uint32_t *) (USB_BASE + 0x50))
-#define RUSB_BUFF_STATUS            ( *(volatile uint32_t *) (USB_BASE + 0x58))
-#define RUSB_EP_STALL_ARM           ( *(volatile uint32_t *) (USB_BASE + 0x68))
-#define RUSB_INTE                   ( *(volatile uint32_t *) (USB_BASE + 0x90))
-#define RUSB_INTS                   ( *(volatile uint32_t *) (USB_BASE + 0x98))
+#define RUSB_ADDR_ENDP              ( *(volatile uint32_t *) (RUSB_BASE + 0x00))
+#define RUSB_MAIN_CTRL              ( *(volatile uint32_t *) (RUSB_BASE + 0x40))
+#define RUSB_SIE_CTRL               ( *(volatile uint32_t *) (RUSB_BASE + 0x4C))
+#define RUSB_SIE_STATUS             ( *(volatile uint32_t *) (RUSB_BASE + 0x50))
+#define RUSB_BUFF_STATUS            ( *(volatile uint32_t *) (RUSB_BASE + 0x58))
+#define RUSB_EP_STALL_ARM           ( *(volatile uint32_t *) (RUSB_BASE + 0x68))
+#define RUSB_INTE                   ( *(volatile uint32_t *) (RUSB_BASE + 0x90))
+#define RUSB_INTS                   ( *(volatile uint32_t *) (RUSB_BASE + 0x98))
 
 // register values
 #define RUSB_MAIN_CTRL_SIM_TIMING       (uint32_t) (1 << 31)

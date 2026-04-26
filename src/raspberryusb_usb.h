@@ -32,7 +32,7 @@
 #define RUSB_USBCTRL_DATA_BUFFERS    (uint32_t) (RUSB_CTRL_REGS_BASE + 0x180)
 
 // DPSRAM layout
-#define RUSB_DPSRAM_SETUP_PACKET     (*(volatile uint32_t *) (USBCTRL_DPSRAM_BASE + 0x00))
+#define RUSB_DPSRAM_SETUP_PACKET     (*(volatile uint32_t *) (RUSBCTRL_DPSRAM_BASE + 0x00))
 #define RUSB_DPSRAM_EP_IN_CTRL(ep_num)      (*(volatile uint32_t *) \
                                               (RUSB_USBCTRL_REGS_BASE + (ep_num * 8)))
 #define RUSB_DPSRAM_EP_OUT_CTRL(ep_num)     (*(volatile uint32_t *) \

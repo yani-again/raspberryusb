@@ -15,7 +15,7 @@ typedef enum {
 } rusb_packet_response_out;
 
 typedef enum {
-    In_None, In_Trans, In_Stall, In_Nak
+    In_None, In_Trans, In_Trans_done, In_Stall, In_Nak
 } rusb_packet_response_in;
 
 
