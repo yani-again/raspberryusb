@@ -11,7 +11,7 @@ typedef struct {
     uint8_t  bDescriptorType;
     uint16_t bcdUSB;
     uint8_t  bDeviceClass;
-    uint8_t  bDeviceSubclass;
+    uint8_t  bDeviceSubClass;
     uint8_t  bDeviceProtocol;
     uint8_t  bMaxPacketSize0;
     uint16_t idVendor;

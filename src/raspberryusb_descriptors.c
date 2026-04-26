@@ -37,7 +37,7 @@ void rusb_generate_device_descriptor(rusb_device_descriptor* descriptor)
     descriptor->bcdUSB = 0x0002;
     descriptor->bDeviceClass = 0x00;
     descriptor->bDeviceSubClass = 0x00;
-    descriptor->bDeviceprotocol = 0x00;
+    descriptor->bDeviceProtocol = 0x00;
     descriptor->bMaxPacketSize0 = 0x40;
     descriptor->idVendor = 0x0000;
     descriptor->idProduct = 0x0000;
@@ -153,7 +153,7 @@ void rusb_device_descriptor_set(uint8_t field, rusb_device_descriptor* descripto
             descriptor->bcdDevice = (uint8_t) value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_IMANUFACTURER:
-            descriptor->Imanufacturer = value;
+            descriptor->iManufacturer = value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_IPRODUCT:
             descriptor->iProduct = value;
