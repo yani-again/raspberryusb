@@ -167,7 +167,7 @@ void rusb_device_descriptor_set(uint8_t field, rusb_device_descriptor* descripto
 /**
  * @brief Same functionality as `rusb_device_descriptor`, see the notes for that.
  */
-void rusb_configuration_descriptor(uint8_t field, rusb_configuration_descriptor* descriptor, uint16_t value)
+void rusb_configuration_descriptor_set(uint8_t field, rusb_configuration_descriptor* descriptor, uint16_t value)
 {
     switch (field)
     {
@@ -189,7 +189,7 @@ void rusb_configuration_descriptor(uint8_t field, rusb_configuration_descriptor*
 /**
  * @brief Same functionality as `rusb_device_descriptor`, see the notes for that.
  */
-void rusb_interface_descriptor(uint8_t field, rusb_interface_descriptor* descriptor, uint16_t value)
+void rusb_interface_descriptor_set(uint8_t field, rusb_interface_descriptor* descriptor, uint16_t value)
 {
     switch (field)
     {
@@ -220,7 +220,7 @@ void rusb_interface_descriptor(uint8_t field, rusb_interface_descriptor* descrip
 /**
  * @brief Same functionality as `rusb_device_descriptor`, see the notes for that.
  */
-void rusb_endpoint_descriptor(uint8_t field, rusb_endpoint_descriptor* descriptor, uint16_t value)
+void rusb_endpoint_descriptor_set(uint8_t field, rusb_endpoint_descriptor* descriptor, uint16_t value)
 {
     switch (field)
     {
@@ -242,7 +242,7 @@ void rusb_endpoint_descriptor(uint8_t field, rusb_endpoint_descriptor* descripto
 /**
  * @brief Same functionality as `rusb_device_descriptor`, see the notes for that.
  */
-void rusb_hid_descriptor(uint8_t field, rusb_hid_descriptor* descriptor, uint16_t value)
+void rusb_hid_descriptor_set(uint8_t field, rusb_hid_descriptor* descriptor, uint16_t value)
 {
     switch (field)
     {
