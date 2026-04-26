@@ -49,8 +49,9 @@
 // endpoint data buffers
 #define RUSB_IN_EP0_BUFFER0 \
             ((volatile uint8_t *) (RUSB_USBCTRL_REGS_BASE + 0x100))
-// #define RUSB_IN_EP0_BUFFER1 \
-//             ((volatile uint8_t *) (RUSB_USBCTRL_REGS_BASE + 0x140))
+/* #define RUSB_IN_EP0_BUFFER1 \
+ *             ((volatile uint8_t *) (RUSB_USBCTRL_REGS_BASE + 0x140))
+ */
 #define RUSB_EP_IN_DATA_BUFFER(ep_num) \
             ((volatile uint8_t *) (RUSB_USBCTRL_DATA_BUFFERS + ep_num * 0x40))
 #define RUSB_EP_OUT_DATA_BUFFER(ep_num) \

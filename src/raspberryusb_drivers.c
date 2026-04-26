@@ -225,45 +225,45 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex)
     switch (wDescriptorType)
     {
         case 0x01:
-            RUSB_IN_EP0_BUFFER0[0] = device_descriptor->bLength;
-            RUSB_IN_EP0_BUFFER0[1] = device_descriptor->bDescriptorType;
+            RUSB_IN_EP0_BUFFER0[0] = device_descriptor.bLength;
+            RUSB_IN_EP0_BUFFER0[1] = device_descriptor.bDescriptorType;
             RUSB_IN_EP0_BUFFER0[2] =
-                (uint8_t) (device_descriptor->bcdUSB & 0xFF);
+                (uint8_t) (device_descriptor.bcdUSB & 0xFF);
             RUSB_IN_EP0_BUFFER0[3] = 
-                (uint8_t) ((device_descriptor->bcdUSB >> 8) & 0xFF);
-            RUSB_IN_EP0_BUFFER0[4] = device_descriptor->bDeviceClass;
-            RUSB_IN_EP0_BUFFER0[5] = device_descriptor->bDeviceSubClass;
-            RUSB_IN_EP0_BUFFER0[6] = device_descriptor->bDeviceProtocol;
-            RUSB_IN_EP0_BUFFER0[7] = device_descriptor->bMaxPacketSize0;
+                (uint8_t) ((device_descriptor.bcdUSB >> 8) & 0xFF);
+            RUSB_IN_EP0_BUFFER0[4] = device_descriptor.bDeviceClass;
+            RUSB_IN_EP0_BUFFER0[5] = device_descriptor.bDeviceSubClass;
+            RUSB_IN_EP0_BUFFER0[6] = device_descriptor.bDeviceProtocol;
+            RUSB_IN_EP0_BUFFER0[7] = device_descriptor.bMaxPacketSize0;
             RUSB_IN_EP0_BUFFER0[8] =
-                (uint8_t) (device_descriptor->idVendor & 0xFF);
+                (uint8_t) (device_descriptor.idVendor & 0xFF);
             RUSB_IN_EP0_BUFFER0[9] =
-                (uint8_t) ((device_descriptor->idVendor >> 8) & 0xFF);
+                (uint8_t) ((device_descriptor.idVendor >> 8) & 0xFF);
             RUSB_IN_EP0_BUFFER0[10] =
-                (uint8_t) (device_descriptor->idProduct & 0xFF);
+                (uint8_t) (device_descriptor.idProduct & 0xFF);
             RUSB_IN_EP0_BUFFER0[11] =
-                (uint8_t) ((device_descriptor->idProduct >> 8) & 0xFF);
+                (uint8_t) ((device_descriptor.idProduct >> 8) & 0xFF);
             RUSB_IN_EP0_BUFFER0[12] =
-                (uint8_t) (device_descriptor->bcdDevice & 0xFF);
+                (uint8_t) (device_descriptor.bcdDevice & 0xFF);
             RUSB_IN_EP0_BUFFER0[13] =
-                (uint8_t) ((device_descriptor->bcdDevice >> 8) & 0xFF);
-            RUSB_IN_EP0_BUFFER0[14] = device_descriptor->iManufacturer;
-            RUSB_IN_EP0_BUFFER0[15] = device_descriptor->iProduct;
-            RUSB_IN_EP0_BUFFER0[16] = device_descriptor->iSerialNumber;
-            RUSB_IN_EP0_BUFFER0[17] = device_descriptor->bNumConfigurations;
+                (uint8_t) ((device_descriptor.bcdDevice >> 8) & 0xFF);
+            RUSB_IN_EP0_BUFFER0[14] = device_descriptor.iManufacturer;
+            RUSB_IN_EP0_BUFFER0[15] = device_descriptor.iProduct;
+            RUSB_IN_EP0_BUFFER0[16] = device_descriptor.iSerialNumber;
+            RUSB_IN_EP0_BUFFER0[17] = device_descriptor.bNumConfigurations;
             break;
         case 0x02:
-            RUSB_IN_EP0_BUFFER0[0] = configuration_descriptor->bLength;
-            RUSB_IN_EP0_BUFFER0[1] = configuration_descriptor->bDescriptorType;
+            RUSB_IN_EP0_BUFFER0[0] = configuration_descriptor.bLength;
+            RUSB_IN_EP0_BUFFER0[1] = configuration_descriptor.bDescriptorType;
             RUSB_IN_EP0_BUFFER0[2] =
-                (uint8_t) (configuration_descriptor->wTotalLength & 0xFF);
+                (uint8_t) (configuration_descriptor.wTotalLength & 0xFF);
             RUSB_IN_EP0_BUFFER0[3] =
-                (uint8_t) ((configuration_descriptor->wTotalLength >> 8) & 0xFF);
-            RUSB_IN_EP0_BUFFER0[4] = configuration_descriptor->bNumInterfaces;
-            RUSB_IN_EP0_BUFFER0[5] = configuration_descriptor->bConfigurationValue;
-            RUSB_IN_EP0_BUFFER0[6] = configuration_descriptor->iConfiguration;
-            RUSB_IN_EP0_BUFFER0[7] = configuration_descriptor->bmAttributes;
-            RUSB_IN_EP0_BUFFER0[8] = configuration_descriptor->MaxPower;
+                (uint8_t) ((configuration_descriptor.wTotalLength >> 8) & 0xFF);
+            RUSB_IN_EP0_BUFFER0[4] = configuration_descriptor.bNumInterfaces;
+            RUSB_IN_EP0_BUFFER0[5] = configuration_descriptor.bConfigurationValue;
+            RUSB_IN_EP0_BUFFER0[6] = configuration_descriptor.iConfiguration;
+            RUSB_IN_EP0_BUFFER0[7] = configuration_descriptor.bmAttributes;
+            RUSB_IN_EP0_BUFFER0[8] = configuration_descriptor.MaxPower;
             break;
         case 0x03:
             if (wDescriptorIndex == 1)
@@ -295,44 +295,44 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex)
             }
             break;
         case 0x04:
-            RUSB_IN_EP0_BUFFER0[0] = interface_descriptor->bLength;
-            RUSB_IN_EP0_BUFFER0[1] = interface_descriptor->bDescriptorType;
-            RUSB_IN_EP0_BUFFER0[2] = interface_descriptor->bInterfaceNumber;
-            RUSB_IN_EP0_BUFFER0[3] = interface_descriptor->bAlternateSetting;
-            RUSB_IN_EP0_BUFFER0[4] = interface_descriptor->bNumEndpoints;
-            RUSB_IN_EP0_BUFFER0[5] = interface_descriptor->bInterfaceClass;
-            RUSB_IN_EP0_BUFFER0[6] = interface_descriptor->bInterfaceSubClass;
-            RUSB_IN_EP0_BUFFER0[7] = interface_descriptor->bInterfaceProtocol;
-            RUSB_IN_EP0_BUFFER0[8] = interface_descriptor->iInterface;
+            RUSB_IN_EP0_BUFFER0[0] = interface_descriptor.bLength;
+            RUSB_IN_EP0_BUFFER0[1] = interface_descriptor.bDescriptorType;
+            RUSB_IN_EP0_BUFFER0[2] = interface_descriptor.bInterfaceNumber;
+            RUSB_IN_EP0_BUFFER0[3] = interface_descriptor.bAlternateSetting;
+            RUSB_IN_EP0_BUFFER0[4] = interface_descriptor.bNumEndpoints;
+            RUSB_IN_EP0_BUFFER0[5] = interface_descriptor.bInterfaceClass;
+            RUSB_IN_EP0_BUFFER0[6] = interface_descriptor.bInterfaceSubClass;
+            RUSB_IN_EP0_BUFFER0[7] = interface_descriptor.bInterfaceProtocol;
+            RUSB_IN_EP0_BUFFER0[8] = interface_descriptor.iInterface;
             break;
         case 0x05:
-            RUSB_IN_EP0_BUFFER0[0] = endpoint_descriptor->bLength;
-            RUSB_IN_EP0_BUFFER0[1] = endpoint_descriptor->bDescriptorType;
-            RUSB_IN_EP0_BUFFER0[2] = endpoint_descriptor->bEndpointAddress;
-            RUSB_IN_EP0_BUFFER0[3] = endpoint_descriptor->bmAttributes;
+            RUSB_IN_EP0_BUFFER0[0] = endpoint_descriptor.bLength;
+            RUSB_IN_EP0_BUFFER0[1] = endpoint_descriptor.bDescriptorType;
+            RUSB_IN_EP0_BUFFER0[2] = endpoint_descriptor.bEndpointAddress;
+            RUSB_IN_EP0_BUFFER0[3] = endpoint_descriptor.bmAttributes;
             RUSB_IN_EP0_BUFFER0[4] =
-                (uint8_t) (endpoint_descriptor->wMaxPacketSize & 0xFF);
+                (uint8_t) (endpoint_descriptor.wMaxPacketSize & 0xFF);
             RUSB_IN_EP0_BUFFER0[5] =
-                (uint8_t) ((endpoint_descriptor->wMaxPacketSize >> 8) & 0xFF);
-            RUSB_IN_EP0_BUFFER0[6] = endpoint_descriptor->bInterval;
+                (uint8_t) ((endpoint_descriptor.wMaxPacketSize >> 8) & 0xFF);
+            RUSB_IN_EP0_BUFFER0[6] = endpoint_descriptor.bInterval;
             break;
         case 0x21:
-            RUSB_IN_EP0_BUFFER0[0] = hid_descriptor->bLength;
-            RUSB_IN_EP0_BUFFER0[1] = hid_descriptor->bDescriptorType;
+            RUSB_IN_EP0_BUFFER0[0] = hid_descriptor.bLength;
+            RUSB_IN_EP0_BUFFER0[1] = hid_descriptor.bDescriptorType;
             RUSB_IN_EP0_BUFFER0[2] =
-                (uint8_t) (hid_descriptor->bcdHID & 0xFF);
+                (uint8_t) (hid_descriptor.bcdHID & 0xFF);
             RUSB_IN_EP0_BUFFER0[3] =
-                (uint8_t) ((hid_descriptor->bcdHID >> 8) & 0xFF);
-            RUSB_IN_EP0_BUFFER0[4] = hid_descriptor->bCountryCode;
-            RUSB_IN_EP0_BUFFER0[5] = hid_descriptor->bNumDescriptors;
-            RUSB_IN_EP0_BUFFER0[6] = hid_descriptor->bDescriptorType;
+                (uint8_t) ((hid_descriptor.bcdHID >> 8) & 0xFF);
+            RUSB_IN_EP0_BUFFER0[4] = hid_descriptor.bCountryCode;
+            RUSB_IN_EP0_BUFFER0[5] = hid_descriptor.bNumDescriptors;
+            RUSB_IN_EP0_BUFFER0[6] = hid_descriptor.bDescriptorType;
             RUSB_IN_EP0_BUFFER0[7] =
-                (uint8_t) (hid_descriptor->wDescriptorLength & 0xFF);
+                (uint8_t) (hid_descriptor.wDescriptorLength & 0xFF);
             RUSB_IN_EP0_BUFFER0[8] =
-                (uint8_t) ((hid_descriptor->wDescriptorLength >> 8) & 0xFF);
+                (uint8_t) ((hid_descriptor.wDescriptorLength >> 8) & 0xFF);
             break;
         case 0x22:
-            for (uint8_t i = 0; i < hid_descriptor->wDescriptorLength; ++i)
+            for (uint8_t i = 0; i < hid_descriptor.wDescriptorLength; ++i)
                 RUSB_IN_EP0_BUFFER0[i] = report_descriptor[i];
             break;
     }

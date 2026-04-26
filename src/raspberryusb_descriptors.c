@@ -32,20 +32,20 @@ void rusb_generate_all_descriptors()
  */
 void rusb_generate_device_descriptor(rusb_device_descriptor* descriptor)
 {
-    descriptor->bLength = 0x12;
-    descriptor->bDescriptorType = 0x01;
-    descriptor->bcdUSB = 0x0002;
-    descriptor->bDeviceClass = 0x00;
-    descriptor->bDeviceSubClass = 0x00;
-    descriptor->bDeviceprotocol = 0x00;
-    descriptor->bMaxPacketSize0 = 0x40;
-    descriptor->idVendor = 0x0000;
-    descriptor->idProduct = 0x0000;
-    descriptor->bcdDevice = 0x0100;
-    descriptor->iManufacturer = 0x01;
-    descriptor->iProduct = 0x02;
-    descriptor->iSerialNumber = 0x03;
-    descriptor->bNumConfigurations = 0x01;
+    descriptor.bLength = 0x12;
+    descriptor.bDescriptorType = 0x01;
+    descriptor.bcdUSB = 0x0002;
+    descriptor.bDeviceClass = 0x00;
+    descriptor.bDeviceSubClass = 0x00;
+    descriptor.bDeviceprotocol = 0x00;
+    descriptor.bMaxPacketSize0 = 0x40;
+    descriptor.idVendor = 0x0000;
+    descriptor.idProduct = 0x0000;
+    descriptor.bcdDevice = 0x0100;
+    descriptor.iManufacturer = 0x01;
+    descriptor.iProduct = 0x02;
+    descriptor.iSerialNumber = 0x03;
+    descriptor.bNumConfigurations = 0x01;
 }
 
 /**
@@ -56,14 +56,14 @@ void rusb_generate_device_descriptor(rusb_device_descriptor* descriptor)
  */
 void rusb_generate_configuration_descriptor(rusb_configuration_descriptor* descriptor)
 {
-    descriptor->bLength = 0x09;
-    descriptor->bDescriptorType = 0x02;
-    descriptor->wTotalLength = 0x0000;
-    descriptor->bNumInterfaces = 0x01;
-    descriptor->bConfigurationValue = 0x01;
-    descriptor->iConfiguration = 0x00;
-    descriptor->bmAttributes = 0x00;
-    descriptor->MaxPower = 0x00;
+    descriptor.bLength = 0x09;
+    descriptor.bDescriptorType = 0x02;
+    descriptor.wTotalLength = 0x0000;
+    descriptor.bNumInterfaces = 0x01;
+    descriptor.bConfigurationValue = 0x01;
+    descriptor.iConfiguration = 0x00;
+    descriptor.bmAttributes = 0x00;
+    descriptor.MaxPower = 0x00;
 }
 
 /**
@@ -74,15 +74,15 @@ void rusb_generate_configuration_descriptor(rusb_configuration_descriptor* descr
  */
 void rusb_generate_interface_descriptor(rusb_interface_descriptor* descriptor)
 {
-    descriptor->bLength = 0x09;
-    descriptor->bDescriptorType = 0x04;
-    descriptor->bInterfaceNumber = 0x00;
-    descriptor->bAlternateSetting = 0x00;
-    descriptor->bNumEndpoints = 0x00;
-    descriptor->bInterfaceClass = 0x03;
-    descriptor->bInterfaceSubClass = 0x00;
-    descriptor->bInterfaceProtocol = 0x00;
-    descriptor->iInterface = 0x00;
+    descriptor.bLength = 0x09;
+    descriptor.bDescriptorType = 0x04;
+    descriptor.bInterfaceNumber = 0x00;
+    descriptor.bAlternateSetting = 0x00;
+    descriptor.bNumEndpoints = 0x00;
+    descriptor.bInterfaceClass = 0x03;
+    descriptor.bInterfaceSubClass = 0x00;
+    descriptor.bInterfaceProtocol = 0x00;
+    descriptor.iInterface = 0x00;
 }
 
 /**
@@ -93,12 +93,12 @@ void rusb_generate_interface_descriptor(rusb_interface_descriptor* descriptor)
  */
 void rusb_generate_endpoint_descriptor(rusb_endpoint_descriptor* descriptor)
 {
-    descriptor->bLength = 0x07;
-    descriptor->bDescriptorType = 0x05;
-    descriptor->bEndpointAddress = 0x00;
-    descriptor->bmAttributes = 0x00;
-    descriptor->wMaxPacketSize = 0x0000;
-    descriptor->bInterval = 0x00;
+    descriptor.bLength = 0x07;
+    descriptor.bDescriptorType = 0x05;
+    descriptor.bEndpointAddress = 0x00;
+    descriptor.bmAttributes = 0x00;
+    descriptor.wMaxPacketSize = 0x0000;
+    descriptor.bInterval = 0x00;
 }
 
 /**
@@ -109,13 +109,13 @@ void rusb_generate_endpoint_descriptor(rusb_endpoint_descriptor* descriptor)
  */
 void rusb_generate_hid_descriptor(rusb_hid_descriptor* descriptor)
 {
-    descriptor->bLength = 0x09;
-    descriptor->bDescriptorType = 0x21;
-    descriptor->bcdHID = 0x1101;
-    descriptor->bCountryCode = 0x00;
-    descriptor->bNumDescriptors = 0x01;
-    descriptor->bDescriptorType2 = 0x22;
-    descriptor->wDescriptorLength = 0x0000;
+    descriptor.bLength = 0x09;
+    descriptor.bDescriptorType = 0x21;
+    descriptor.bcdHID = 0x1101;
+    descriptor.bCountryCode = 0x00;
+    descriptor.bNumDescriptors = 0x01;
+    descriptor.bDescriptorType2 = 0x22;
+    descriptor.wDescriptorLength = 0x0000;
 }
 
 
@@ -135,31 +135,31 @@ void rusb_device_descriptor_set(uint8_t field, rusb_device_descriptor* descripto
     switch (field)
     {
         case RUSB_DEVICE_DESCRIPTOR_BDEVICECLASS:
-            descriptor->bDeviceClass = value;
+            descriptor.bDeviceClass = value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_BDEVICESUBCLASS:
-            descriptor->bDeviceSubClass = value;
+            descriptor.bDeviceSubClass = value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_BDEVICEPROTOCOL:
-            descriptor->bDeviceProtocol = value;
+            descriptor.bDeviceProtocol = value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_IDVENDOR:
-            descriptor->idVendor = (uint8_t) value;
+            descriptor.idVendor = (uint8_t) value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_IDPRODUCT:
-            descriptor->idProduct = (uint8_t) value;
+            descriptor.idProduct = (uint8_t) value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_BCDDEVICE:
-            descriptor->bcdDevice = (uint8_t) value;
+            descriptor.bcdDevice = (uint8_t) value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_IMANUFACTURER:
-            descriptor->Imanufacturer = value;
+            descriptor.Imanufacturer = value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_IPRODUCT:
-            descriptor->iProduct = value;
+            descriptor.iProduct = value;
             break;
         case RUSB_DEVICE_DESCRIPTOR_ISERIALNUMBER:
-            descriptor->iSerialNumber = value;
+            descriptor.iSerialNumber = value;
             break;
     }
 }
@@ -172,16 +172,16 @@ void rusb_configuration_descriptor(uint8_t field, rusb_configuration_descriptor*
     switch (field)
     {
         case RUSB_CONFIGURATION_DESCRIPTOR_WTOTALLENGTH:
-            descriptor->wTotalLength = value;
+            descriptor.wTotalLength = value;
             break;
         case RUSB_CONFIGURATION_DESCRIPTOR_BNUMINTERFACES:
-            descriptor->bNumInterfaces = (uint8_t) value;
+            descriptor.bNumInterfaces = (uint8_t) value;
             break;
         case RUSB_CONFIGURATION_DESCRIPTOR_BMATTRIBUTES:
-            descriptor->bmAttributes = (uint8_t) value;
+            descriptor.bmAttributes = (uint8_t) value;
             break;
         case RUSB_CONFIGURATION_DESCRIPTOR_MAXPOWER:
-            descriptor->MaxPower = (uint8_t) value;
+            descriptor.MaxPower = (uint8_t) value;
             break;
     }
 }
@@ -194,25 +194,25 @@ void rusb_interface_descriptor(uint8_t field, rusb_interface_descriptor* descrip
     switch (field)
     {
         case RUSB_INTERFACE_DESCRIPTOR_BINTERFACENUMBER:
-            descriptor->bInterfaceNumber = (uint8_t) value;
+            descriptor.bInterfaceNumber = (uint8_t) value;
             break;
         case RUSB_INTERFACE_DESCRIPTOR_BALTERNATESETTING:
-            descriptor->bAlternateSetting = (uint8_t) value;
+            descriptor.bAlternateSetting = (uint8_t) value;
             break;
         case RUSB_INTERFACE_DESCRIPTOR_BNUMENDPOINTS:
-            descriptor->bNumEndpoints = (uint8_t) value;
+            descriptor.bNumEndpoints = (uint8_t) value;
             break;
         case RUSB_INTERFACE_DESCRIPTOR_BINTERFACECLASS:
-            descriptor->bInterfaceClass = (uint8_t) value;
+            descriptor.bInterfaceClass = (uint8_t) value;
             break;
         case RUSB_INTERFACE_DESCRIPTOR_BINTERFACESUBCLASS:
-            descriptor->bInterfaceSubClass = (uint8_t) value;
+            descriptor.bInterfaceSubClass = (uint8_t) value;
             break;
         case RUSB_INTERFACE_DESCRIPTOR_BINTERFACEPROTOCOL:
-            descriptor->bInterfaceProtocol = (uint8_t) value;
+            descriptor.bInterfaceProtocol = (uint8_t) value;
             break;
         case RUSB_INTERFACE_DESCRIPTOR_IINTERFACE:
-            descriptor->iInterface = (uint8_t) value;
+            descriptor.iInterface = (uint8_t) value;
             break;
     }
 }
@@ -225,16 +225,16 @@ void rusb_endpoint_descriptor(uint8_t field, rusb_endpoint_descriptor* descripto
     switch (field)
     {
         case RUSB_ENDPOINT_DESCRIPTOR_BENDPOINTADDRESS:
-            descriptor->bEndpointAddress = (uint8_t) value;
+            descriptor.bEndpointAddress = (uint8_t) value;
             break;
         case RUSB_ENDPOINT_DESCRIPTOR_BMATTRIBUTES:
-            descriptor->bmAttributes = (uint8_t) value;
+            descriptor.bmAttributes = (uint8_t) value;
             break;
         case RUSB_ENDPOINT_DESCRIPTOR_WMAXPACKETSIZE:
-            descriptor->wMaxPacketSize = value;
+            descriptor.wMaxPacketSize = value;
             break;
         case RUSB_ENDPOINT_DESCRIPTOR_BINTERVAL:
-            descriptor->bInterval = (uint8_t) value;
+            descriptor.bInterval = (uint8_t) value;
             break;
     }
 }
@@ -247,16 +247,16 @@ void rusb_hid_descriptor(uint8_t field, rusb_hid_descriptor* descriptor, uint16_
     switch (field)
     {
         case RUSB_HID_DESCRIPTOR_BCOUNTRYCODE:
-            descriptor->bCountryCode = (uint8_t) value;
+            descriptor.bCountryCode = (uint8_t) value;
             break;
         case RUSB_HID_DESCRIPTOR_BNUMDESCRIPTORS:
-            descriptor->bNumDescriptors = (uint8_t) value;
+            descriptor.bNumDescriptors = (uint8_t) value;
             break;
         case RUSB_HID_DESCRIPTOR_BDESCRIPTORTYPE:
-            descriptor->bDescriptorType = (uint8_t) value;
+            descriptor.bDescriptorType = (uint8_t) value;
             break;
         case RUSB_HID_DESCRIPTOR_WDESCRIPTORLENGTH:
-            descriptor->wDescriptorLength = value;
+            descriptor.wDescriptorLength = value;
             break;
     }
 }
