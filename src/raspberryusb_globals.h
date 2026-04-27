@@ -20,6 +20,7 @@ typedef enum {
 
 
 extern const uint8_t rusb_supported_descriptors[];
+extern const uint8_t rusb_supported_descriptors_count;
 
 extern volatile rusb_USB_state global_USB_state;
 extern volatile rusb_packet_response_out global_packet_response_out;
