@@ -26,6 +26,25 @@ void rusb_isr(void)
 
             return;
         }
+        else if (bmRequestType == 0x80)
+        {
+            uint8_t wDescriptorType = RUSB_DPSRAM_SETUP_PACKET[3];
+            uint8_t wDescriptorIndex = RUSB_DPSRAM_SETUP_PACKET[2];
+            uint16_t wLength =
+                (((uint16_t) RUSB_DPSRAM_SETUP_PACKET[7]) << 8) | 
+                (((uint16_t) RUSB_DPSRAM_SETUP_PACKET[6]) & 0x00FF);
+
+            // load the right descriptor in
+            uint8_t data_length = 
+                rusb_load_descriptor(wDescriptorType, wDescriptorIndex, wLength);
+
+            // send descriptor to host
+            rusb_ep0_in(data_length);
+            // rusb_packet_response_in setup_response = In_Trans;
+            // rusb_handle_in_packet(0, setup_response);
+
+            return;
+        }
 
         if (global_USB_state != State_Configured)
         {
@@ -414,6 +433,8 @@ uint8_t rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, 
                 RUSB_IN_EP0_BUFFER0[i] = rusb_report_descriptor[i];
             break;
     }
+
+    return 0;
 }
 
 volatile uint8_t* rusb_handle_out_packet(void)
