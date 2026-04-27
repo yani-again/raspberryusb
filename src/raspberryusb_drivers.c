@@ -266,7 +266,7 @@ void rusb_ep0_in(uint8_t data_length)
     RUSB_DPSRAM_EP_IN_BUFF_CTRL(0) = reg_value;
 }
 
-uint8_t data_length rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uint16_t wLength)
+uint8_t rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uint16_t wLength)
 {
     // zero-out data buffer first to remove previous data
     memset(RUSB_IN_EP0_BUFFER0, 0, 0x40);
