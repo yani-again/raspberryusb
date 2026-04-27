@@ -30,6 +30,7 @@
 #define RUSB_USBCTRL_DPSRAM_BASE     0x50100000
 #define RUSB_USBCTRL_REGS_BASE       0x50110000
 #define RUSB_USBCTRL_DATA_BUFFERS    (uint32_t) (RUSB_USBCTRL_REGS_BASE + 0x180)
+#define RUSB_DPSRAM                  ((volatile uint8_t *) (RUSB_USBCTRL_DPSRAM_BASE))
 
 // DPSRAM layout
 #define RUSB_DPSRAM_SETUP_PACKET \

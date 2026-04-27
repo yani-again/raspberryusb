@@ -13,6 +13,20 @@ void rusb_isr(void)
         RUSB_INTS = RUSB_INTS_BUFF_STATUS;
         RUSB_INTS = RUSB_INTS_TRANS_COMPLETE;
 
+        uint8_t bmRequestType = RUSB_DPSRAM_SETUP_PACKET[0];
+        uint8_t bRequest = RUSB_DPSRAM_SETUP_PACKET[1];
+        uint16_t wValue = (((uint16_t) (RUSB_DPSRAM_SETUP_PACKET[3])) << 8)
+                        | RUSB_DPSRAM_SETUP_PACKET[2];
+
+        if (bmRequestType == 0x00)
+        {
+            // addr received
+            if (bRequest == 0x05)
+                RUSB_ADDR_ENDP = (uint8_t) wValue & 0x7f;
+
+            return;
+        }
+
         if (global_USB_state != State_Configured)
         {
             for (uint8_t i = 0; i < 64; ++i)
@@ -214,11 +228,13 @@ void rusb_isr(void)
             (((uint16_t) RUSB_DPSRAM_SETUP_PACKET[6]) & 0x00FF);
 
         // load the right descriptor in
-        rusb_load_descriptor(wDescriptorType, wDescriptorIndex, wLength);
+        uint8_t data_length = 
+            rusb_load_descriptor(wDescriptorType, wDescriptorIndex, wLength);
 
         // send descriptor to host
-        rusb_packet_response_in setup_response = In_Trans;
-        rusb_handle_in_packet(0, setup_response);
+        rusb_handle_ep0_in(data_length);
+        // rusb_packet_response_in setup_response = In_Trans;
+        // rusb_handle_in_packet(0, setup_response);
 
         return;
     }
@@ -235,7 +251,22 @@ void rusb_enable_usb(void)
     RUSB_MAIN_CTRL |= RUSB_MAIN_CTRL_CONTROLLER_EN;
 }
 
-void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uint16_t wLength)
+void rusb_ep0_in(uint8_t data_length)
+{
+    if (data_length > 64)
+        data_length = 64;
+
+    uint32_t reg_value = data_length
+                       | RUSB_EP_BUFF_CTRL_BUFF0_FULL
+                       | RUSB_EP_BUFF_CTRL_BUFF0_LAST
+                       | RUSB_EP_BUFF_CTRL_BUFF0_PID
+                       | RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
+    rusb_ep0_pid ^= 1;
+
+    RUSB_DPSRAM_EP_IN_BUFF_CTRL(0) = reg_value;
+}
+
+uint8_t data_length rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uint16_t wLength)
 {
     // zero-out data buffer first to remove previous data
     memset(RUSB_IN_EP0_BUFFER0, 0, 0x40);
@@ -269,7 +300,8 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uin
             RUSB_IN_EP0_BUFFER0[15] = device_descriptor.iProduct;
             RUSB_IN_EP0_BUFFER0[16] = device_descriptor.iSerialNumber;
             RUSB_IN_EP0_BUFFER0[17] = device_descriptor.bNumConfigurations;
-            break;
+
+            return (uint8_t) device_descriptor.bLength;
         case 0x02:
             if (wLength != configuration_descriptor.wTotalLength)
             {
@@ -284,6 +316,8 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uin
                 RUSB_IN_EP0_BUFFER0[6] = configuration_descriptor.iConfiguration;
                 RUSB_IN_EP0_BUFFER0[7] = configuration_descriptor.bmAttributes;
                 RUSB_IN_EP0_BUFFER0[8] = configuration_descriptor.MaxPower;
+
+                return (uint8_t)
             }
             else
             {

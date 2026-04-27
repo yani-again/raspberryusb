@@ -105,7 +105,9 @@ void rusb_reset(void);
 void rusb_enable_usb(void);
 
 // packet handling
-void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uint16_t wLength);
+uint8_t data_length rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uint16_t wLength);
+void rusb_ep0_in(uint8_t data_length);
+void rusb_ep0_out(void);
 volatile uint8_t* rusb_handle_out_packet(void);
 void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send);
 
