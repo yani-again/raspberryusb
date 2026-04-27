@@ -13,18 +13,20 @@ void rusb_isr(void)
         RUSB_INTS = RUSB_INTS_BUFF_STATUS;
         RUSB_INTS = RUSB_INTS_TRANS_COMPLETE;
 
-        if (global_USB_state != configured)
+        if (global_USB_state != State_Configured)
         {
             for (uint8_t i = 0; i < 64; ++i)
-                RUSB_IN_EP0_BUFFER0[i] = 0;
-
-            if (rusb_packet_response_in == In_Trans)
             {
-                rusb_packet_response_in = In_None;
+                RUSB_IN_EP0_BUFFER0[i] = 0;
+            }
+
+            if (global_packet_response_in == In_Trans)
+            {
+                global_packet_response_in = In_None;
 
                 // reset buffer availability
-                RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_FULL;
-                RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) |= RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
+                RUSB_DPSRAM_EP_IN_BUFF_CTRL(0) &= ~RUSB_EP_BUFF_CTRL_BUFF0_FULL;
+                RUSB_DPSRAM_EP_IN_BUFF_CTRL(0) |= RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
             }
         }
 
@@ -420,7 +422,7 @@ void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send)
             // make buffer unavailable
             RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
 
-            rusb_packet_response_in = In_Trans;
+            global_packet_response_in = In_Trans;
 
             break;
         case In_Stall:
