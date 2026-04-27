@@ -368,7 +368,7 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uin
     return;
 }
 
-uint16_t rusb_handle_out_packet(void)
+volatile uint8_t* rusb_handle_out_packet(void)
 {
     if (global_packet_response_out != Out_None)
     {

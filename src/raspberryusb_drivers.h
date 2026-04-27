@@ -106,7 +106,7 @@ void rusb_enable_usb(void);
 
 // packet handling
 void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uint16_t wLength);
-uint16_t rusb_handle_out_packet(void);
+volatile uint8_t* rusb_handle_out_packet(void);
 void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send);
 
 // endpoint functions
