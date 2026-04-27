@@ -170,6 +170,7 @@ void rusb_isr(void)
     {
         RUSB_INTS = RUSB_INTS_BUS_RESET;
 
+        RUSB_SIE_CTRL |= RUSB_SIE_CTRL_DIRECT_EN;
         RUSB_SIE_CTRL |= RUSB_SIE_CTRL_DIRECT_DP;   // signal full-speed
 
         RUSB_SIE_STATUS = 0;    // reset in case left-over bits
@@ -264,6 +265,7 @@ void rusb_isr(void)
 void rusb_reset(void)
 {
     RUSB_INTE |= RUSB_INTE_BUS_RESET;
+    RUSB_SIE_CTRL |= RUSB_SIE_CTRL_DIRECT_EN;
     RUSB_SIE_CTRL |= RUSB_SIE_CTRL_DIRECT_DP;   // signal full-speed
 }
 
