@@ -434,7 +434,7 @@ void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send)
  *          - INTERRUPT
  *          - BULK
  */
-void rusb_setup_out_endpoint(uint8_t ep_num, uint8_t ep_type)
+void rusb_setup_out_endpoint(uint8_t ep_num, uint32_t ep_type)
 {
     RUSB_DPSRAM_EP_OUT_CTRL(ep_num) = RUSB_EP_CTRL_INT_TRANS
                                     | RUSB_EP_CTRL_INT_STALL;
