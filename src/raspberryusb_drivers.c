@@ -232,7 +232,7 @@ void rusb_isr(void)
             rusb_load_descriptor(wDescriptorType, wDescriptorIndex, wLength);
 
         // send descriptor to host
-        rusb_handle_ep0_in(data_length);
+        rusb_ep0_in(data_length);
         // rusb_packet_response_in setup_response = In_Trans;
         // rusb_handle_in_packet(0, setup_response);
 
@@ -269,7 +269,7 @@ void rusb_ep0_in(uint8_t data_length)
 uint8_t rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uint16_t wLength)
 {
     // zero-out data buffer first to remove previous data
-    memset(RUSB_IN_EP0_BUFFER0, 0, 0x40);
+    memset((void *)RUSB_IN_EP0_BUFFER0, 0, 0x40);
 
     switch (wDescriptorType)
     {
@@ -414,8 +414,6 @@ uint8_t rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, 
                 RUSB_IN_EP0_BUFFER0[i] = rusb_report_descriptor[i];
             break;
     }
-
-    return;
 }
 
 volatile uint8_t* rusb_handle_out_packet(void)
