@@ -4,7 +4,7 @@
 
 // supported descriptors:
 // device, configuration, string, interface, endpoint, HID, and report
-const uint8_t rusb_supported_descriptors[] = [0x01, 0x02, 0x03, 0x04, 0x05, 0x21, 0x22];
+const uint8_t rusb_supported_descriptors[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x21, 0x22};
 const uint8_t rusb_supported_descriptors_count =
         sizeof(rusb_supported_descriptors) / sizeof(rusb_supported_descriptors[0]);
 
