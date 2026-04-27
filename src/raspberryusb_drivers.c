@@ -174,15 +174,15 @@ void rusb_isr(void)
         // rusb_packet_response_in setup_response = In_Trans;
         // rusb_handle_in_packet(0, setup_response);
 
-        uint8_t bRequest = (RUSB_DPSRAM_SETUP_PACKET)[1];
+        uint8_t bRequest = RUSB_DPSRAM_SETUP_PACKET[1];
 
         if (bRequest == GET_DESCRIPTOR)
         {
-            uint8_t wDescriptorType = (RUSB_DPSRAM_SETUP_PACKET)[3];
-            uint8_t wDescriptorIndex = (RUSB_DPSRAM_SETUP_PACKET)[2];
+            uint8_t wDescriptorType = RUSB_DPSRAM_SETUP_PACKET[3];
+            uint8_t wDescriptorIndex = RUSB_DPSRAM_SETUP_PACKET[2];
             uint16_t wLength =
-                (((uint16_t) (RUSB_DPSRAM_SETUP_PACKET)[7]) << 8) | 
-                (((uint16_t) (RUSB_DPSRAM_SETUP_PACKET)[8]) & 0x00FF);
+                (((uint16_t) RUSB_DPSRAM_SETUP_PACKET[7]) << 8) | 
+                (((uint16_t) RUSB_DPSRAM_SETUP_PACKET[8]) & 0x00FF);
 
             /* ensure descriptor is supported by RaspberryUSB.
              * For full list of supported descriptors, see specification.
