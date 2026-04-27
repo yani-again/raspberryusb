@@ -170,6 +170,8 @@ void rusb_isr(void)
     {
         RUSB_INTS = RUSB_INTS_BUS_RESET;
 
+        RUSB_SIE_CTRL |= RUSB_SIE_CTRL_DIRECT_DP;   // signal full-speed
+
         RUSB_SIE_STATUS = 0;    // reset in case left-over bits
         RUSB_ADDR_ENDP &= 0xFF80;   // zero out address
         RUSB_MAIN_CTRL |= RUSB_MAIN_CTRL_CONTROLLER_EN;
