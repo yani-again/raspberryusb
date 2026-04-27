@@ -110,8 +110,8 @@ uint16_t rusb_handle_out_packet(void);
 void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send);
 
 // endpoint functions
-void rusb_setup_out_endpoint(uint8_t ep_num, uint8_t ep_type);
-void rusb_setup_in_endpoint(uint8_t ep_num, uint8_t ep_type);
+void rusb_setup_out_endpoint(uint8_t ep_num, uint32_t ep_type);
+void rusb_setup_in_endpoint(uint8_t ep_num, uint32_t ep_type);
 
 
 #endif

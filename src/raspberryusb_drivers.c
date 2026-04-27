@@ -444,7 +444,7 @@ void rusb_setup_out_endpoint(uint8_t ep_num, uint8_t ep_type)
         case RUSB_EP_CTRL_TYPE_CONTROL:
             RUSB_DPSRAM_EP_OUT_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_CONTROL;
             break;
-        case RUSB_EP_CTRL_TYPE_ISOCHRONOUS:
+        case RUSB_EP_CTRL_TYPE_ISO:
             RUSB_DPSRAM_EP_OUT_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_ISO;
             break;
         case RUSB_EP_CTRL_TYPE_INTERRUPT:
@@ -476,7 +476,7 @@ void rusb_setup_out_endpoint(uint8_t ep_num, uint8_t ep_type)
  *          - INTERRUPT
  *          - BULK
  */
-void rusb_setup_in_endpoint(uint8_t ep_num, uint8_t ep_type)
+void rusb_setup_in_endpoint(uint8_t ep_num, uint32_t ep_type)
 {
     RUSB_DPSRAM_EP_IN_CTRL(ep_num) = RUSB_EP_CTRL_INT_TRANS
                                    | RUSB_EP_CTRL_INT_NAK;
@@ -486,7 +486,7 @@ void rusb_setup_in_endpoint(uint8_t ep_num, uint8_t ep_type)
         case RUSB_EP_CTRL_TYPE_CONTROL:
             RUSB_DPSRAM_EP_IN_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_CONTROL;
             break;
-        case RUSB_EP_CTRL_TYPE_ISOCHRONOUS:
+        case RUSB_EP_CTRL_TYPE_ISO:
             RUSB_DPSRAM_EP_IN_CTRL(ep_num) |= RUSB_EP_CTRL_TYPE_ISO;
             break;
         case RUSB_EP_CTRL_TYPE_INTERRUPT:
