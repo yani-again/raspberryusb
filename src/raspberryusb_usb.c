@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <assert.h>
+#include <stdio.h>
 #include "raspberryusb_usb.h"
 #include "raspberryusb_drivers.h"
 #include "raspberryusb_globals.h"
@@ -51,11 +53,11 @@ void rusb_transfer_handler_out(uint8_t ep_num)
     {
         if (RUSB_SIE_STATUS & RUSB_SIE_STATUS_DATA_SEQ_ERROR)
         {
-            global_packet_response_out = Data_seq_error;
+            global_packet_response_out = Out_Data_seq_error;
         }
         else
         {
-            global_packet_response_out = Error;
+            global_packet_response_out = Out_Error;
         }
 
         RUSB_SIE_STATUS &= (~RUSB_SIE_STATUS_DATA_SEQ_ERROR &
@@ -74,7 +76,7 @@ void rusb_transfer_handler_out(uint8_t ep_num)
     if (RUSB_DPSRAM_EP_OUT_BUFF_CTRL(ep_num) & RUSB_EP_BUFF_CTRL_BUFF0_SEND_STALL)
     {
         printf("Endpoint %d sent stall (stall bit set).\n", ep_num);
-        global_packet_response_out = Stall_sent;
+        global_packet_response_out = Out_Stall;
         return;
     }
 
@@ -84,18 +86,18 @@ void rusb_transfer_handler_out(uint8_t ep_num)
         ;
 
     // last buffer check
-    if (RUSB_DPSRAM_OUT_BUFF_CTRL(ep_num) & RUSB_EP_BUFF_CTRL_BUFF0_LAST)
+    if (RUSB_DPSRAM_EP_OUT_BUFF_CTRL(ep_num) & RUSB_EP_BUFF_CTRL_BUFF0_LAST)
     {
         RUSB_DPSRAM_OUT_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_LAST;
         RUSB_SIE_STATUS |= RUSB_SIE_STATUS_TRANS_COMPLETE;
-        global_packet_response_out = Trans_complete;
+        global_packet_response_out = Out_Trans_complete;
         printf("Transfer completed on endpoint %d.\n", ep_num);
     }
     // transaction successful, but not complete
     else
     {
         printf("Transfer completed on endpoint %d.\n", ep_num);
-        global_packet_response_out = Trans_done;
+        global_packet_response_out = Out_Trans_done;
     }
 
     // set buffer bit
