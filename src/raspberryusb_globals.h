@@ -26,6 +26,7 @@ extern volatile rusb_USB_state global_USB_state;
 extern volatile rusb_packet_response_out global_packet_response_out;
 extern volatile rusb_packet_response_in global_packet_response_in;
 extern volatile uint8_t global_buffer_status[2][16];
+extern uint8_t rusb_ep0_pid;
 
 extern rusb_device_descriptor device_descriptor;
 extern rusb_configuration_descriptor configuration_descriptor;

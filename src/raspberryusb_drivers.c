@@ -317,7 +317,7 @@ uint8_t data_length rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescr
                 RUSB_IN_EP0_BUFFER0[7] = configuration_descriptor.bmAttributes;
                 RUSB_IN_EP0_BUFFER0[8] = configuration_descriptor.MaxPower;
 
-                return (uint8_t)
+                return (uint8_t) configuration_descriptor.bLength;
             }
             else
             {
@@ -342,6 +342,8 @@ uint8_t data_length rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescr
                 RUSB_IN_EP0_BUFFER0[15] = interface_descriptor.bInterfaceSubClass;
                 RUSB_IN_EP0_BUFFER0[16] = interface_descriptor.bInterfaceProtocol;
                 RUSB_IN_EP0_BUFFER0[17] = interface_descriptor.iInterface;
+
+                return (uint8_t) 0x12;
 
                 RUSB_IN_EP0_BUFFER0[18] = endpoint_descriptor_1_in.bLength;
                 RUSB_IN_EP0_BUFFER0[19] = endpoint_descriptor_1_in.bDescriptorType;
