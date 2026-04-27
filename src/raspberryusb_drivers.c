@@ -10,8 +10,23 @@ void rusb_isr(void)
     // packet received
     if (RUSB_INTS & (RUSB_INTS_BUFF_STATUS | RUSB_INTS_TRANS_COMPLETE))
     {
-        RUSB_INTS &= ~RUSB_INTS_BUFF_STATUS;
-        RUSB_INTS &= ~RUSB_INTS_TRANS_COMPLETE;
+        RUSB_INTS = RUSB_INTS_BUFF_STATUS;
+        RUSB_INTS = RUSB_INTS_TRANS_COMPLETE;
+
+        if (global_USB_state != configured)
+        {
+            for (uint8_t i = 0; i < 64; ++i)
+                RUSB_IN_EP0_BUFFER0[i] = 0;
+
+            if (rusb_packet_response_in == In_Trans)
+            {
+                rusb_packet_response_in = In_None;
+
+                // reset buffer availability
+                RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_FULL;
+                RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) |= RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
+            }
+        }
 
         for (uint8_t i = 0; i < 16; ++i)
         {
@@ -26,6 +41,7 @@ void rusb_isr(void)
                         global_packet_response_out = Out_Stall;
                         global_buffer_status[0][i] = 1;
                         RUSB_BUFF_STATUS = 0;
+                        RUSB_BUFF_STATUS = 1 << (i * 2 + 1);
 
                         return;
                     }
@@ -40,13 +56,13 @@ void rusb_isr(void)
                     global_packet_response_out = Out_Trans_complete;
                     /* TODO: datasheet says this bit is RO but it also says "clear by
                      * writing to this bit" - figure out which it is */
-                    RUSB_INTS &= ~RUSB_INTS_TRANS_COMPLETE;
+                    RUSB_INTS = RUSB_INTS_TRANS_COMPLETE;
                 }
 
                 global_buffer_status[0][i] = 1;
 
                 // NOTE! leave this line last
-                RUSB_BUFF_STATUS = 0;
+                RUSB_BUFF_STATUS = 1 << (i * 2 + 1);
 
                 return;
             }
@@ -65,7 +81,7 @@ void rusb_isr(void)
                     {
                         global_packet_response_in = In_Stall;
                         global_buffer_status[1][i] = 1;
-                        RUSB_BUFF_STATUS = 0;
+                        RUSB_BUFF_STATUS = 1 << (i * 2);
 
                         return;
                     }
@@ -80,13 +96,13 @@ void rusb_isr(void)
                     global_packet_response_in = In_Trans_done;
                     /* TODO: datasheet says this bit is RO but it also says "clear by
                      * writing to this bit" - figure out which it is */
-                    RUSB_INTS &= ~RUSB_INTS_TRANS_COMPLETE;
+                    RUSB_INTS = RUSB_INTS_TRANS_COMPLETE;
                 }
 
                 global_buffer_status[1][i] = 1;
 
                 // NOTE! leave this line last
-                RUSB_BUFF_STATUS = 0;
+                RUSB_BUFF_STATUS = 1 << (i * 2);
 
                 return;
             }
@@ -97,7 +113,7 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_BUFF_STATUS)
     {
-        RUSB_INTS &= ~RUSB_INTS_BUFF_STATUS;
+        RUSB_INTS = RUSB_INTS_BUFF_STATUS;
 
         for (uint8_t i = 0; i < 16; ++i)
         {
@@ -106,7 +122,7 @@ void rusb_isr(void)
                 global_packet_response_out = Out_Trans_done;
 
                 // NOTE! ensure this line is last
-                RUSB_BUFF_STATUS = 0;
+                RUSB_BUFF_STATUS = 1 << (i * 2 + 1);
 
                 return;
             }
@@ -117,9 +133,8 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_BUS_RESET)
     {
-        RUSB_INTS &= ~RUSB_INTS_BUS_RESET;
+        RUSB_INTS = RUSB_INTS_BUS_RESET;
 
-        RUSB_INTS = 0;
         RUSB_SIE_STATUS = 0;    // reset in case left-over bits
         RUSB_ADDR_ENDP &= 0xFF80;   // zero out address
         RUSB_MAIN_CTRL |= RUSB_MAIN_CTRL_CONTROLLER_EN;
@@ -138,7 +153,7 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_DEV_RESUME_FROM_HOST)
     {
-        RUSB_INTS &= ~RUSB_INTS_DEV_RESUME_FROM_HOST;
+        RUSB_INTS = RUSB_INTS_DEV_RESUME_FROM_HOST;
 
         RUSB_SIE_STATUS &= ~RUSB_SIE_STATUS_SUSPENDED;
         global_USB_state = State_Configured;
@@ -148,7 +163,7 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_DEV_SUSPEND)
     {
-        RUSB_INTS &= ~RUSB_INTS_DEV_SUSPEND;
+        RUSB_INTS = RUSB_INTS_DEV_SUSPEND;
 
         global_USB_state = State_Suspended;
 
@@ -157,7 +172,7 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_DEV_CONN_DIS)
     {
-        RUSB_INTS &= ~RUSB_INTS_DEV_CONN_DIS;
+        RUSB_INTS = RUSB_INTS_DEV_CONN_DIS;
 
         global_USB_state = State_None;
 
@@ -171,18 +186,18 @@ void rusb_isr(void)
                    | RUSB_INTS_ERROR_RX_TIMEOUT
                    | RUSB_INTS_ERROR_DATA_SEQ))
     {
-        RUSB_INTS &= ~(RUSB_INTS_ERROR_CRC
-                     | RUSB_INTS_ERROR_BIT_STUFF
-                     | RUSB_INTS_ERROR_RX_OVERFLOW
-                     | RUSB_INTS_ERROR_RX_TIMEOUT
-                     | RUSB_INTS_ERROR_DATA_SEQ);
+        RUSB_INTS = RUSB_INTS_ERROR_CRC
+                  | RUSB_INTS_ERROR_BIT_STUFF
+                  | RUSB_INTS_ERROR_RX_OVERFLOW
+                  | RUSB_INTS_ERROR_RX_TIMEOUT
+                  | RUSB_INTS_ERROR_DATA_SEQ;
 
         return;
     }
 
     if (RUSB_INTS & RUSB_INTS_SETUP_REQ)
     {
-        RUSB_INTS &= ~RUSB_INTS_SETUP_REQ;
+        RUSB_INTS = RUSB_INTS_SETUP_REQ;
 
         // global_USB_state = State_Default;
         // send device descriptor through
@@ -190,38 +205,20 @@ void rusb_isr(void)
         // rusb_handle_in_packet(0, setup_response);
 
         uint8_t bRequest = RUSB_DPSRAM_SETUP_PACKET[1];
+        uint8_t wDescriptorType = RUSB_DPSRAM_SETUP_PACKET[3];
+        uint8_t wDescriptorIndex = RUSB_DPSRAM_SETUP_PACKET[2];
+        uint16_t wLength =
+            (((uint16_t) RUSB_DPSRAM_SETUP_PACKET[7]) << 8) | 
+            (((uint16_t) RUSB_DPSRAM_SETUP_PACKET[6]) & 0x00FF);
 
-        if (bRequest == GET_DESCRIPTOR)
-        {
-            uint8_t wDescriptorType = RUSB_DPSRAM_SETUP_PACKET[3];
-            uint8_t wDescriptorIndex = RUSB_DPSRAM_SETUP_PACKET[2];
-            uint16_t wLength =
-                (((uint16_t) RUSB_DPSRAM_SETUP_PACKET[7]) << 8) | 
-                (((uint16_t) RUSB_DPSRAM_SETUP_PACKET[8]) & 0x00FF);
+        // load the right descriptor in
+        rusb_load_descriptor(wDescriptorType, wDescriptorIndex, wLength);
 
-            /* ensure descriptor is supported by RaspberryUSB.
-             * For full list of supported descriptors, see specification.
-             */
-            uint8_t supported_descriptor = 0;
-            for (uint8_t i = 0; rusb_supported_descriptors_count; ++i)
-            {
-                if (wDescriptorType == rusb_supported_descriptors[i])
-                {
-                    supported_descriptor = 1;
-                    break;
-                }
-            }
+        // send descriptor to host
+        rusb_packet_response_in setup_response = In_Trans;
+        rusb_handle_in_packet(0, setup_response);
 
-            if (!supported_descriptor)
-                return;
-
-            // load the right descriptor in
-            rusb_load_descriptor(wDescriptorType, wDescriptorIndex, wLength);
-
-            // send descriptor to host
-            rusb_packet_response_in setup_response = In_Trans;
-            rusb_handle_in_packet(0, setup_response);
-        }
+        return;
     }
 }
 
@@ -385,7 +382,6 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uin
 
 volatile uint8_t* rusb_handle_out_packet(void)
 {
-    // TODO: return buffer offset
     for (uint8_t i = 0; i < 16; ++i)
     {
         if (global_buffer_status[0][i])
@@ -394,6 +390,10 @@ volatile uint8_t* rusb_handle_out_packet(void)
             while (!(RUSB_DPSRAM_EP_OUT_BUFF_CTRL(i) & RUSB_EP_BUFF_CTRL_BUFF0_FULL))
                 ;
             RUSB_DPSRAM_EP_OUT_BUFF_CTRL(i) &= ~RUSB_EP_BUFF_CTRL_BUFF0_FULL;
+
+            for (uint8_t i = 0; i < 12; ++i)
+                asm volatile ("nop");
+
             RUSB_DPSRAM_EP_OUT_BUFF_CTRL(i) |= RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
 
             if (i == 0)
@@ -415,19 +415,12 @@ void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send)
 
             // wait some clock cycles - mentioned in RP2040 datasheet
             for (uint8_t i = 0; i < 20; ++i)
-                ;
+                asm volatile ("nop");
 
             // make buffer unavailable
             RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
 
-            // wait for host to receive
-            while (!(RUSB_SIE_STATUS & RUSB_SIE_STATUS_ACK_REC))
-                ;
-            RUSB_SIE_STATUS &= ~RUSB_SIE_STATUS_ACK_REC;
-
-            // reset buffer availability
-            RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_FULL;
-            RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) |= RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
+            rusb_packet_response_in = In_Trans;
 
             break;
         case In_Stall:
