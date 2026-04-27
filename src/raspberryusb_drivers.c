@@ -370,25 +370,20 @@ void rusb_load_descriptor(uint8_t wDescriptorType, uint8_t wDescriptorIndex, uin
 
 volatile uint8_t* rusb_handle_out_packet(void)
 {
-    if (global_packet_response_out != Out_None)
+    // TODO: return buffer offset
+    for (uint8_t i = 0; i < 16; ++i)
     {
-        global_packet_response_out = Out_None;
-
-        // TODO: return buffer offset
-        for (uint8_t i = 0; i < 16; ++i)
+        if (global_buffer_status[0][i])
         {
-            if (global_buffer_status[0][i])
-            {
-                // wait for buffer to fill before returning
-                while (!(RUSB_DPSRAM_EP_OUT_BUFF_CTRL(i) & RUSB_EP_BUFF_CTRL_BUFF0_FULL))
-                    ;
-                RUSB_DPSRAM_EP_OUT_BUFF_CTRL(i) &= ~RUSB_EP_BUFF_CTRL_BUFF0_FULL;
-                RUSB_DPSRAM_EP_OUT_BUFF_CTRL(i) |= RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
+            // wait for buffer to fill before returning
+            while (!(RUSB_DPSRAM_EP_OUT_BUFF_CTRL(i) & RUSB_EP_BUFF_CTRL_BUFF0_FULL))
+                ;
+            RUSB_DPSRAM_EP_OUT_BUFF_CTRL(i) &= ~RUSB_EP_BUFF_CTRL_BUFF0_FULL;
+            RUSB_DPSRAM_EP_OUT_BUFF_CTRL(i) |= RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
 
-                if (i != 0)
-                    return RUSB_EP_OUT_DATA_BUFFER(i);
+            if (i == 0)
                 return RUSB_IN_EP0_BUFFER0;
-            }
+            return RUSB_EP_OUT_DATA_BUFFER(i);
         }
     }
 
@@ -409,6 +404,15 @@ void rusb_handle_in_packet(uint8_t ep_num, rusb_packet_response_in to_send)
 
             // make buffer unavailable
             RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
+
+            // wait for host to receive
+            while (!(RUSB_SIE_STATUS & RUSB_SIE_STATUS_ACK_REC))
+                ;
+            RUSB_SIE_STATUS &= ~RUSB_SIE_STATUS_ACK_REC;
+
+            // reset buffer availability
+            RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) &= ~RUSB_EP_BUFF_CTRL_BUFF0_FULL;
+            RUSB_DPSRAM_EP_IN_BUFF_CTRL(ep_num) |= RUSB_EP_BUFF_CTRL_BUFF0_AVAILABLE;
 
             break;
         case In_Stall:
