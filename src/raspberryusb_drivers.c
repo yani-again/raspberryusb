@@ -10,6 +10,9 @@ void rusb_isr(void)
     // packet received
     if (RUSB_INTS & (RUSB_INTS_BUFF_STATUS | RUSB_INTS_TRANS_COMPLETE))
     {
+        RUSB_INTS &= ~RUSB_INTS_BUFF_STATUS;
+        RUSB_INTS &= ~RUSB_INTS_TRANS_COMPLETE;
+
         for (uint8_t i = 0; i < 16; ++i)
         {
             if (RUSB_BUFF_STATUS & RUSB_BUFF_STATUS_EP_OUT(i))
@@ -94,6 +97,8 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_BUFF_STATUS)
     {
+        RUSB_INTS &= ~RUSB_INTS_BUFF_STATUS;
+
         for (uint8_t i = 0; i < 16; ++i)
         {
             if (RUSB_BUFF_STATUS & RUSB_BUFF_STATUS_EP_OUT(i))
@@ -112,6 +117,8 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_BUS_RESET)
     {
+        RUSB_INTS &= ~RUSB_INTS_BUS_RESET;
+
         RUSB_INTS = 0;
         RUSB_SIE_STATUS = 0;    // reset in case left-over bits
         RUSB_ADDR_ENDP &= 0xFF80;   // zero out address
@@ -131,6 +138,8 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_DEV_RESUME_FROM_HOST)
     {
+        RUSB_INTS &= ~RUSB_INTS_DEV_RESUME_FROM_HOST;
+
         RUSB_SIE_STATUS &= ~RUSB_SIE_STATUS_SUSPENDED;
         global_USB_state = State_Configured;
 
@@ -139,6 +148,8 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_DEV_SUSPEND)
     {
+        RUSB_INTS &= ~RUSB_INTS_DEV_SUSPEND;
+
         global_USB_state = State_Suspended;
 
         return;
@@ -146,6 +157,8 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_DEV_CONN_DIS)
     {
+        RUSB_INTS &= ~RUSB_INTS_DEV_CONN_DIS;
+
         global_USB_state = State_None;
 
         return;
@@ -169,6 +182,8 @@ void rusb_isr(void)
 
     if (RUSB_INTS & RUSB_INTS_SETUP_REQ)
     {
+        RUSB_INTS &= ~RUSB_INTS_SETUP_REQ;
+
         // global_USB_state = State_Default;
         // send device descriptor through
         // rusb_packet_response_in setup_response = In_Trans;
